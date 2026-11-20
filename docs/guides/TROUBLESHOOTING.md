@@ -1,4 +1,4 @@
-# 05 · Troubleshooting
+# 05 · Solução de problemas
 
 ## `redirect_uri_mismatch`
 

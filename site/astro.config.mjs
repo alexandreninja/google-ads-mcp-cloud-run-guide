@@ -8,15 +8,15 @@ export default defineConfig({
   site,
   base,
   integrations: [starlight({
-    title: 'Google Ads MCP · Cloud Run',
-    description: 'Deployment, OAuth, validation, troubleshooting.',
+    title: 'Google Ads MCP · Guia de Implantação',
+    description: 'Implantação no Cloud Run, OAuth, testes e solução de problemas.',
     social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide' }],
     customCss: ['./src/styles/custom.css'],
     sidebar: [
       { label: 'Início', slug: 'index' },
       { label: 'Pré-requisitos', slug: 'getting-started' },
       { label: 'Arquitetura', slug: 'architecture' },
-      { label: 'Deploy', slug: 'deployment' },
+      { label: 'Implantação', slug: 'deployment' },
       { label: 'OAuth e segurança', slug: 'security' },
       { label: 'Testes e erros', slug: 'troubleshooting' },
       { label: 'Referências', slug: 'references' }

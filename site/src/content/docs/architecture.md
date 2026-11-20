@@ -3,7 +3,7 @@ title: Arquitetura
 description: Fluxos de build e de consulta.
 ---
 
-## Deploy
+## Implantação
 
 `Google Ads MCP upstream → Cloud Build → Artifact Registry → Cloud Run`
 

@@ -10,4 +10,4 @@ description: Valide o servidor e resolva problemas.
 | `401` | Login ausente ou inválido |
 | Sem ferramentas | Transporte e configuração do servidor |
 
-[Validação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/VALIDATION.md) · [Troubleshooting detalhado](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/TROUBLESHOOTING.md).
+[Validação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/VALIDATION.md) · [Solução de problemas detalhada](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/TROUBLESHOOTING.md).

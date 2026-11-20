@@ -3,6 +3,8 @@
 ## 1. Status do Cloud Run
 
 ```bash
+# Consulta a URL pública do serviço e confirma que ele existe.
+# Ajuste o nome e a região caso tenha usado valores diferentes.
 gcloud run services describe google-ads-mcp \
   --region=us-central1 \
   --format='value(status.url)'
@@ -13,6 +15,8 @@ Substitua serviço e região pelos valores definidos na implantação.
 ## 2. Teste anônimo de HTTP
 
 ```bash
+# Envia uma solicitação sem login e mostra apenas o código de resposta.
+# O HTTP 401 pode ser esperado quando a autenticação está ativa.
 curl --silent --show-error --output /dev/null \
   --write-out '%{http_code}\n' \
   "https://SEU-SERVICO.a.run.app/mcp"
@@ -34,7 +38,7 @@ Em um cliente compatível com Streamable HTTP, configure:
 }
 ```
 
-**A estrutura exata varia por cliente.** Consulte a documentação do produto utilizado (VS Code, Codex CLI, outros).
+**O JSON não permite comentários.** As chaves `mcpServers` e `serverUrl` são identificadores de configuração; substitua somente a URL de exemplo. A estrutura exata varia por cliente. Consulte a documentação do produto utilizado (VS Code, Codex CLI, outros).
 
 Conclua o fluxo OAuth interativo.
 

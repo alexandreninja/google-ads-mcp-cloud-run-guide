@@ -9,4 +9,4 @@ description: Configuração de cliente OAuth, segredos e permissões.
 - Conceda IAM somente à conta de serviço necessária.
 - Verifique escopos OAuth e permissões Google Ads.
 
-[OAuth passo a passo](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OAUTH-AND-SECRETS.md).
+[Configurar OAuth passo a passo](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OAUTH-AND-SECRETS.md).

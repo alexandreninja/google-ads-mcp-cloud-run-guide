@@ -18,12 +18,17 @@
 ## Preparar projeto
 
 ```bash
+# Faz login no Google Cloud com a conta que possui as permissões necessárias.
 gcloud auth login
 
+# Informe o identificador do projeto e a região onde ficará a infraestrutura.
 export PROJECT_ID="SEU_PROJECT_ID"
 export REGION="us-central1"
 
+# Define o projeto ativo nos comandos gcloud.
 gcloud config set project "$PROJECT_ID"
+
+# Habilita os serviços usados na implantação e na autenticação.
 gcloud services enable \
   run.googleapis.com \
   cloudbuild.googleapis.com \
@@ -37,7 +42,10 @@ gcloud services enable \
 ## Obter código
 
 ```bash
+# Obtém o servidor diretamente do repositório oficial.
 git clone https://github.com/googleads/google-ads-mcp.git
+
+# Entra na pasta de trabalho e consulta as versões disponíveis.
 cd google-ads-mcp
 git tag --list
 ```

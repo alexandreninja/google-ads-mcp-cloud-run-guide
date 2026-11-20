@@ -15,12 +15,15 @@
 ## Consultas úteis
 
 ```bash
+# Inspeciona a configuração e o estado atual do serviço.
 gcloud run services describe google-ads-mcp --region=us-central1
 
+# Lista revisões do serviço para identificar versões anteriores e apoiar rollback.
 gcloud run revisions list \
   --service=google-ads-mcp \
   --region=us-central1
 
+# Consulta os 10 builds mais recentes e seus estados.
 gcloud builds list --limit=10
 ```
 

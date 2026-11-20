@@ -9,7 +9,7 @@ Implante o servidor **Google Ads MCP** com Streamable HTTP, OAuth 2.0 e Secret M
 
 1. [Pré-requisitos](getting-started/)
 2. [Arquitetura](architecture/)
-3. [Deploy](deployment/)
+3. [Implantação](deployment/)
 4. [OAuth e segurança](security/)
 5. [Testes e troubleshooting](troubleshooting/)
 

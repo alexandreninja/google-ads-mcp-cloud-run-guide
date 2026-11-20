@@ -1,5 +1,5 @@
 ---
-title: Deploy
+title: Implantação
 description: Construção e implantação no Cloud Run.
 ---
 
@@ -10,4 +10,4 @@ description: Construção e implantação no Cloud Run.
 5. Configure OAuth e segredos.
 6. Teste o endpoint MCP.
 
-[Procedimento com comandos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/DEPLOY.md).
+[Passo a passo com comandos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/DEPLOY.md).

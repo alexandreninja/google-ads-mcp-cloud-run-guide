@@ -8,4 +8,4 @@ description: Prepare contas, permissões e ferramentas.
 - Cliente OAuth e Secret Manager preparados.
 - Git e `gcloud` CLI disponíveis.
 
-[Guia completo com comandos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/PREREQUISITES.md).
+[Pré-requisitos com comandos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/PREREQUISITES.md).
