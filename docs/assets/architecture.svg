@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="850" viewBox="0 0 1600 850" role="img" aria-labelledby="title">
+<title id="title">Arquitetura do Google Ads MCP: implantação e consulta</title>
+<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071122"/><stop offset="1" stop-color="#111735"/></linearGradient></defs>
+<rect width="1600" height="850" fill="url(#b)"/>
+<text x="85" y="95" font-size="55" font-family="Inter,Arial,sans-serif" fill="#f5faff" font-weight="800">Arquitetura do Google Ads MCP</text>
+<text x="85" y="140" font-family="Inter,Arial,sans-serif" font-size="25" fill="#a4c2dc">Do build às consultas autorizadas · representação lógica</text>
+<rect x="70" y="205" width="1460" height="215" rx="26" fill="#0c2540" stroke="#32bfff" stroke-width="3"/>
+<text x="100" y="260" fill="#60d7ff" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="700">IMPLANTAÇÃO</text>
+<g font-family="Inter,Arial,sans-serif" font-size="29" fill="#f8fbff" text-anchor="middle">
+<rect x="110" y="290" width="280" height="86" rx="16" fill="#123954" stroke="#498fe9"/><text x="250" y="344">Upstream fixado</text>
+<rect x="485" y="290" width="280" height="86" rx="16" fill="#123954" stroke="#498fe9"/><text x="625" y="344">Cloud Build</text>
+<rect x="860" y="290" width="280" height="86" rx="16" fill="#123954" stroke="#498fe9"/><text x="1000" y="344">Artifact Registry</text>
+<rect x="1235" y="290" width="250" height="86" rx="16" fill="#0e3b34" stroke="#30e6aa"/><text x="1360" y="344">Cloud Run</text>
+</g>
+<g fill="none" stroke="#45e8ba" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M409 332 H460 M447 320 L462 332 L447 344"/>
+<path d="M784 332 H835 M822 320 L837 332 L822 344"/>
+<path d="M1159 332 H1210 M1197 320 L1212 332 L1197 344"/>
+</g>
+<rect x="70" y="455" width="1460" height="270" rx="26" fill="#161d3b" stroke="#a28aff" stroke-width="3"/>
+<text x="100" y="515" fill="#c1afff" font-family="Inter,Arial,sans-serif" font-size="29" font-weight="700">CONSULTA</text>
+<g font-family="Inter,Arial,sans-serif" font-size="30" fill="#fff" text-anchor="middle">
+<rect x="110" y="550" width="340" height="100" rx="16" fill="#18314b" stroke="#4f9ce5"/><text x="280" y="612">Cliente MCP</text>
+<rect x="630" y="550" width="340" height="100" rx="16" fill="#124038" stroke="#3eeeb3"/><text x="800" y="612">Cloud Run /mcp</text>
+<rect x="1150" y="550" width="340" height="100" rx="16" fill="#21304c" stroke="#b59bff"/><text x="1320" y="612">Google Ads API</text>
+</g>
+<g fill="none" stroke="#5af3d6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M470 600 H610 M485 588 L469 600 L485 612 M595 588 L611 600 L595 612"/><path d="M990 600 H1130 M1005 588 L989 600 L1005 612 M1115 588 L1131 600 L1115 612"/></g>
+<text x="130" y="690" font-size="22" fill="#a9bfda" font-family="Inter,Arial,sans-serif">Controles de apoio: OAuth 2.0 · Secret Manager · IAM · logs · governança de dados</text>
+<text x="90" y="796" font-family="Inter,Arial,sans-serif" font-size="24" fill="#8fb2ce">Cloud Build não é acionado durante a consulta; respostas retornam ao cliente autorizado.</text>
+</svg>

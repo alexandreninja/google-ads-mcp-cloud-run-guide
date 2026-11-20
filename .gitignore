@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*.json
+*client_secret*.json
+*token*.json
+secrets/
+private/
+.cache/
+node_modules/
+dist/
+.astro/
+.DS_Store
+__pycache__/
+*.log

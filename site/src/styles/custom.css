@@ -1,0 +1,12 @@
+:root {
+  --sl-color-accent-low: #053a33;
+  --sl-color-accent: #27dfa7;
+  --sl-color-accent-high: #a5ffe0;
+  --sl-color-bg: #071326;
+  --sl-color-bg-nav: #061124;
+  --sl-color-bg-sidebar: #07182b;
+  --sl-color-hairline: #1c3b55;
+  --sl-font: 'Inter', system-ui, sans-serif;
+}
+.sl-markdown-content a { text-underline-offset: .18em; }
+.sl-markdown-content img { border-radius: 14px; border: 1px solid #234a64; }
