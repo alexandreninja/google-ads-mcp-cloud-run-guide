@@ -1,12 +1,13 @@
 ---
-title: "Guia de deploy"
-description: "Preparação, build, OAuth e testes."
+title: Deploy
+description: Construção e implantação no Cloud Run.
 ---
 
-1. Prepare serviços e projeto Google Cloud.
-2. Fixe versão do código upstream.
-3. Construa imagem no Cloud Build e publique no Artifact Registry.
-4. Configure Cloud Run, OAuth e Secret Manager.
-5. Teste autenticação e consultas autorizadas.
+1. Selecione a versão do upstream.
+2. Configure o projeto Google Cloud e o Artifact Registry.
+3. Construa a imagem com Cloud Build.
+4. Implante o contêiner no Cloud Run.
+5. Configure OAuth e segredos.
+6. Teste o endpoint MCP.
 
-[Guia parametrizado completo](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/DEPLOY.md).
+[Procedimento com comandos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/DEPLOY.md).

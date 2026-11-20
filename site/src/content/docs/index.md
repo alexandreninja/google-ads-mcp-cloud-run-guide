@@ -1,16 +1,16 @@
 ---
-title: "Bem-vindo"
-description: "Entenda a experiência e escolha como estudar."
+title: Início
+description: Instale o Google Ads MCP no Cloud Run.
 ---
 
-O **Google Ads MCP** oficial é a base do software. Este guia documenta arquitetura remota com Cloud Run, OAuth, erros reais e responsabilidades.
+Implante o servidor **Google Ads MCP** com Streamable HTTP, OAuth 2.0 e Secret Manager.
 
-## Escolha seu caminho
+## Etapas
 
-- [Arquitetura](/google-ads-mcp-cloud-run-guide/architecture/) — decisões e fluxos.
-- [Comece aqui](/google-ads-mcp-cloud-run-guide/getting-started/) — pré-requisitos.
-- [Deploy](/google-ads-mcp-cloud-run-guide/deployment/) — sequência do experimento.
-- [Segurança](/google-ads-mcp-cloud-run-guide/security/) — fronteiras de confiança.
-- [Troubleshooting](/google-ads-mcp-cloud-run-guide/troubleshooting/) — erros reais.
+1. [Pré-requisitos](getting-started/)
+2. [Arquitetura](architecture/)
+3. [Deploy](deployment/)
+4. [OAuth e segurança](security/)
+5. [Testes e troubleshooting](troubleshooting/)
 
-> Não é uma redistribuição do código oficial, nem comprovação de homologação corporativa.
+[Código oficial](https://github.com/googleads/google-ads-mcp) · [Documentação completa no GitHub](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/tree/main/docs)

@@ -1,33 +1,62 @@
-# OAuth 2.0, Secret Manager e acesso
+# 03 · OAuth 2.0 e Secret Manager
 
-## 1. Identidades e autorização
+## 1. Criar o cliente OAuth
 
-Defina quem pode acessar o cliente MCP, o endpoint Cloud Run e as contas Google Ads. As permissões da API dependem do usuário autenticado e do escopo OAuth. **A ferramenta de leitura não torna o escopo `adwords` exclusivamente de leitura.**
+No Google Cloud Console, prepare um cliente OAuth compatível com o fluxo web utilizado pelo servidor.
 
-## 2. OAuth remoto
+- Registre o Client ID.
+- Guarde o Client Secret fora do repositório.
+- Cadastre as **redirect URIs exatas** exigidas pelo servidor e pelos clientes que serão conectados.
+- Confirme a URL de callback na versão do [Google Ads MCP](https://github.com/googleads/google-ads-mcp) que você fixou.
 
-No modo HTTP do servidor oficial, revise as variáveis e os fluxos OAuth do upstream:
+## 2. Criar os segredos
 
-- `GOOGLE_ADS_MCP_OAUTH_CLIENT_ID`: identificador do cliente OAuth.
-- `GOOGLE_ADS_MCP_OAUTH_CLIENT_SECRET`: segredo — **armazenar no Secret Manager**.
-- `GOOGLE_ADS_MCP_BASE_URL`: URL pública correta do serviço.
-- `GOOGLE_ADS_MCP_JWT_SIGNING_KEY`: chave de assinatura persistente quando aplicável.
-- Estratégia de persistência do estado OAuth e sua criptografia.
+Exemplo de nomes (não são credenciais):
 
-Registre as **redirect URIs exatas** esperadas. Evite publicar URLs reais do serviço ou de callbacks particulares.
+- `google-ads-mcp-oauth-client-secret`
+- `google-ads-mcp-jwt-signing-key`
 
-## 3. Secret Manager
+```bash
+gcloud secrets create google-ads-mcp-oauth-client-secret \
+  --replication-policy="automatic"
 
-Crie os segredos em projeto autorizado com IAM mínimo. Prefira uma versão explícita e registre revisões. Não digite valores em shell history, issues ou arquivos versionados.
+gcloud secrets create google-ads-mcp-jwt-signing-key \
+  --replication-policy="automatic"
+```
 
-Valide que a identidade do Cloud Run possui permissão de acesso somente aos segredos necessários. Substituir uma versão exige atualizar a referência efetivamente usada pelo serviço e verificar o novo deploy.
+Adicione as versões com o mecanismo seguro de sua preferência. Evite valores em comandos copiados, variáveis de shell compartilhadas, arquivos versionados e histórico.
 
-## 4. Estado OAuth
+## 3. Conceder acesso à conta de serviço
 
-Em serviços de escala a zero, processos e filesystem efêmero não são armazenamento durável. Para uso contínuo/multi-instância, planeje backend persistente adequado; consulte os backends documentados pelo upstream, incluindo Firestore ou Redis, e respectivas permissões e custos.
+```bash
+export PROJECT_ID="SEU_PROJECT_ID"
+export RUNTIME_SA_EMAIL="google-ads-mcp-runtime@${PROJECT_ID}.iam.gserviceaccount.com"
 
-## 5. Verificação
+for SECRET in google-ads-mcp-oauth-client-secret google-ads-mcp-jwt-signing-key; do
+  gcloud secrets add-iam-policy-binding "$SECRET" \
+    --member="serviceAccount:${RUNTIME_SA_EMAIL}" \
+    --role="roles/secretmanager.secretAccessor"
+done
+```
 
-Faça testes anônimos negativos, fluxo de login autorizado, descoberta de ferramentas e consulta a uma conta própria/de teste. Confira logs **sem imprimir tokens**.
+## 4. Variáveis da aplicação
 
-Próximo: [Validação](VALIDATION.md).
+| Variável | Origem |
+| --- | --- |
+| `GOOGLE_ADS_MCP_OAUTH_CLIENT_ID` | ID do cliente OAuth |
+| `GOOGLE_ADS_MCP_OAUTH_CLIENT_SECRET` | Secret Manager |
+| `GOOGLE_ADS_MCP_BASE_URL` | URL HTTPS pública do serviço |
+| `GOOGLE_ADS_MCP_JWT_SIGNING_KEY` | Secret Manager |
+| `GOOGLE_ADS_MCP_STORAGE_TYPE` | Backend compatível com sua versão |
+
+O escopo Google Ads pode autorizar operações mais amplas que as ferramentas expostas. Ajuste a disponibilidade das ferramentas no servidor conforme a versão e revise IAM/OAuth separadamente.
+
+## 5. Checklist
+
+- [ ] Redirect URIs autorizadas corretamente.
+- [ ] Serviço utiliza a versão correta dos segredos.
+- [ ] Conta de serviço tem somente os acessos necessários.
+- [ ] URL base confere com o endpoint publicado.
+- [ ] Persistência de OAuth preparada se houver uso contínuo ou múltiplas instâncias.
+
+[← Deploy](../getting-started/DEPLOY.md) · [Próximo: validação →](VALIDATION.md)

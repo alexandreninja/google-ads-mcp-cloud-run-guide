@@ -1,11 +1,12 @@
 ---
-title: "OAuth e segurança"
-description: "Credenciais, permissões e fluxo de dados."
+title: OAuth e segurança
+description: Configuração de cliente OAuth, segredos e permissões.
 ---
 
-- Controle quem acessa servidor e ferramentas.
-- Ferramentas somente leitura não tornam OAuth `adwords` somente leitura.
-- Revise Secret Manager, IAM, persistência de OAuth e revogação.
-- Avalie os clientes MCP que recebem respostas e os ambientes de processamento.
+- Crie um cliente OAuth compatível com o servidor.
+- Configure redirect URIs exatas.
+- Armazene os segredos no Secret Manager.
+- Conceda IAM somente à conta de serviço necessária.
+- Verifique escopos OAuth e permissões Google Ads.
 
-[Política de segurança](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/SECURITY.md) · [OAuth](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OAUTH-AND-SECRETS.md).
+[OAuth passo a passo](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OAUTH-AND-SECRETS.md).

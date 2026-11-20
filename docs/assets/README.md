@@ -1,6 +1,6 @@
-# Ilustrações técnicas
+# Imagens
 
-- `github-header.svg`: header vetorial do README, com blocos e conectores definidos como geometria SVG.
-- `architecture.svg`: dois fluxos lógicos — implantação e consulta.
+- [Header](github-header.svg)
+- [Arquitetura](architecture.svg)
 
-Arquivos SVG são fontes editáveis. Não incluem nomes de projetos internos, contas, clientes nem credenciais. Versões PNG renderizadas podem ser geradas localmente para uso em artigos, apresentações e redes sociais.
+As fontes SVG permitem editar textos, blocos e conectores sem perda de qualidade.

@@ -1,17 +1,16 @@
 ---
-title: "Arquitetura"
-description: "Transporte e hospedagem são decisões diferentes."
+title: Arquitetura
+description: Fluxos de build e de consulta.
 ---
 
-## Duas decisões
+## Deploy
 
-**Streamable HTTP:** para testar um servidor remoto reutilizável por clientes autorizados.
+`Google Ads MCP upstream → Cloud Build → Artifact Registry → Cloud Run`
 
-**Cloud Run:** caminho documentado, viável com Google Cloud já disponível; **não é uma imposição do MCP**.
+## Consulta
 
-## Dois fluxos
+`Cliente MCP ↔ Cloud Run /mcp ↔ Google Ads API`
 
-- **Deploy:** upstream → Cloud Build → Artifact Registry → Cloud Run.
-- **Consulta:** cliente autorizado ↔ servidor MCP ↔ Google Ads API.
+OAuth e Secret Manager participam da autenticação e das credenciais.
 
-[Arquitetura técnica](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/ARCHITECTURE.md) · [ADRs](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/tree/main/docs/decisions).
+[Arquitetura completa](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/ARCHITECTURE.md).

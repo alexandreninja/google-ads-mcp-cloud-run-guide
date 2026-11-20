@@ -1,11 +1,11 @@
 ---
-title: "Comece aqui"
-description: "Pré-requisitos e sequência segura."
+title: Pré-requisitos
+description: Prepare contas, permissões e ferramentas.
 ---
 
-1. Use projeto Google Cloud **próprio ou autorizado**.
-2. Confirme acesso e permissões na Google Ads API.
-3. Avalie que clientes de IA processarão as respostas.
-4. Prepare IAM, OAuth e orçamento antes de iniciar.
+- Google Cloud com faturamento e APIs habilitados.
+- Acesso autorizado a Google Ads API.
+- Cliente OAuth e Secret Manager preparados.
+- Git e `gcloud` CLI disponíveis.
 
-[Pré-requisitos detalhados](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/PREREQUISITES.md) · [Implantação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/DEPLOY.md).
+[Guia completo com comandos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/getting-started/PREREQUISITES.md).

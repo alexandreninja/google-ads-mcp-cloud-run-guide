@@ -1,12 +1,13 @@
 ---
-title: "Erros e testes"
-description: "Problemas reais e comportamento esperado."
+title: Testes e erros
+description: Valide o servidor e resolva problemas.
 ---
 
-| Sinal | Interpretação |
+| Código | Verificação |
 | --- | --- |
-| `redirect_uri_mismatch` | Corrigir URLs OAuth autorizadas |
-| `invalid_client` | Revisar cliente e versão do segredo; evitar causa presumida |
-| HTTP 401 anônimo | Resultado esperado quando autenticação é exigida |
+| `redirect_uri_mismatch` | Callback autorizado |
+| `invalid_client` | Identidade e segredo OAuth |
+| `401` | Login ausente ou inválido |
+| Sem ferramentas | Transporte e configuração do servidor |
 
-[Diagnóstico detalhado](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/TROUBLESHOOTING.md) · [Validação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/VALIDATION.md).
+[Validação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/VALIDATION.md) · [Troubleshooting detalhado](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/TROUBLESHOOTING.md).

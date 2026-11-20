@@ -1,43 +1,40 @@
-# Arquitetura e fronteiras
+# Arquitetura
 
-![Fluxos de implantação e consulta](assets/architecture.svg)
+![Arquitetura do Google Ads MCP](assets/architecture.svg)
 
-## Capô fechado
+## Componentes
 
-Existem dois fluxos distintos:
+| Serviço | Função |
+| --- | --- |
+| Google Ads MCP | Disponibiliza ferramentas MCP conectadas à Google Ads API |
+| Cloud Run | Executa o servidor HTTP |
+| Cloud Build | Constrói a imagem do contêiner |
+| Artifact Registry | Armazena a imagem publicada |
+| OAuth 2.0 | Autoriza o cliente e o acesso à API |
+| Secret Manager | Armazena o segredo OAuth e a chave de assinatura |
+| Google Ads API | Fornece os dados das contas autorizadas |
 
-1. **Implantação:** versão do código oficial → Cloud Build → Artifact Registry → Cloud Run.
-2. **Consulta:** cliente MCP autorizado ↔ endpoint Streamable HTTP no Cloud Run ↔ ferramentas do servidor ↔ Google Ads API.
-
-OAuth, Secret Manager, IAM e logs sustentam o funcionamento. **Eles não são necessariamente nós sequenciais do caminho de cada requisição**; Cloud Build não participa das consultas.
-
-## Capô aberto
-
-| Camada | Responsabilidade | Verificação necessária |
-| --- | --- | --- |
-| Cliente | Requisições, interface e processamento das respostas | Política de dados, suporte MCP |
-| Transporte | Streamable HTTP e negociação de sessão | Versão e interoperabilidade |
-| Servidor | Ferramentas e intermediação com Google Ads API | Ferramentas habilitadas, auditoria |
-| Identidade | OAuth e tokens | Callback, scopes, revogação |
-| Infraestrutura | Execução, IAM, logs, limites, custos | Persistência e segurança |
-| Dados | Informações autorizadas das contas | Minimização e governança |
-
-## Decisões registradas
-
-- [ADR-0001](decisions/0001-streamable-http.md): transporte remoto para reduzir dependência de execução local.
-- [ADR-0002](decisions/0002-cloud-run.md): hospedagem no Google Cloud por viabilidade institucional e caminho oficial documentado — **não é exigência do MCP**.
-
-## Representação textual
+## Fluxo de implantação
 
 ```text
-Deploy:
-upstream fixado -> Cloud Build -> Artifact Registry -> Cloud Run
-
-Uso:
-Cliente autorizado <-> Cloud Run /mcp <-> Google Ads MCP <-> Google Ads API
-
-Controles de apoio:
-OAuth | Secret Manager | IAM | logs | governança de dados
+Código oficial → Cloud Build → Artifact Registry → Cloud Run
 ```
 
-Antes de utilizar com outras pessoas, consulte a [política de segurança](../SECURITY.md) e o [checklist operacional](guides/OPERATIONS.md).
+## Fluxo de consulta
+
+```text
+Cliente MCP → HTTPS /mcp → Servidor Google Ads MCP → Google Ads API
+          ←                 ←                        ←
+```
+
+OAuth, IAM e Secret Manager sustentam autenticação e gestão de credenciais. Cloud Build e Artifact Registry **não são acionados em cada consulta**.
+
+## Configuração
+
+- **Transporte:** Streamable HTTP.
+- **Endpoint:** `https://SEU-SERVICO.../mcp`.
+- **Identidade:** OAuth e permissões Google Ads.
+- **Logs:** Cloud Run / Cloud Logging.
+- **Estado OAuth:** planejar persistência compatível com o número de instâncias e reinicializações.
+
+Próximo: [Implantação](getting-started/DEPLOY.md).

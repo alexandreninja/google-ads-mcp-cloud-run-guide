@@ -1,15 +1,47 @@
-# Pré-requisitos — ambiente próprio ou autorizado
+# 01 · Pré-requisitos
 
-- Conta e projeto Google Cloud com faturamento habilitado e permissões adequadas.
-- Acesso autorizado à Google Ads API e às contas de anúncio utilizadas nos testes.
-- Cliente OAuth configurado de acordo com o modo de execução.
-- `gcloud` CLI autenticado; Git e acesso à documentação oficial.
-- Permissões controladas para Cloud Build, Artifact Registry, Cloud Run e Secret Manager.
-- Plano de custos, logs e revisão de segurança para cada ambiente.
+## Google Cloud
 
-> [!CAUTION]
-> Nunca utilize uma conta corporativa, dados de clientes ou uma VPS pessoal como ambiente institucional sem autorização apropriada.
+- Projeto com faturamento habilitado.
+- Acesso ao Cloud Run, Cloud Build, Artifact Registry, Secret Manager e IAM.
+- `gcloud` CLI autenticado.
+- Git e terminal com Bash (exemplos deste guia).
+- Permissão para habilitar a Google Ads API.
 
-O projeto upstream é a referência para requisitos de versão, variáveis e autenticação: [googleads/google-ads-mcp](https://github.com/googleads/google-ads-mcp).
+## Google Ads
 
-Próximo: [Deploy](DEPLOY.md).
+- Conta Google com acesso às contas a consultar.
+- Google Ads API habilitada no projeto.
+- Credenciais OAuth 2.0 adequadas ao modo HTTP.
+- Credenciais e permissões exigidas pela **versão oficial** do servidor.
+
+## Preparar projeto
+
+```bash
+gcloud auth login
+
+export PROJECT_ID="SEU_PROJECT_ID"
+export REGION="us-central1"
+
+gcloud config set project "$PROJECT_ID"
+gcloud services enable \
+  run.googleapis.com \
+  cloudbuild.googleapis.com \
+  artifactregistry.googleapis.com \
+  secretmanager.googleapis.com \
+  googleads.googleapis.com
+```
+
+> Executar builds e criar recursos pode gerar cobrança.
+
+## Obter código
+
+```bash
+git clone https://github.com/googleads/google-ads-mcp.git
+cd google-ads-mcp
+git tag --list
+```
+
+Escolha e fixe a versão que será utilizada; reveja instruções e variáveis do `README.md` do upstream correspondente.
+
+**Próximo:** [02 · Implantação](DEPLOY.md).

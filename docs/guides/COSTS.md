@@ -1,16 +1,24 @@
-# Custos e avaliação de viabilidade
+# Custos do ambiente
 
-No experimento, foi observado consumo de CPU no Cloud Run **na ordem de centavos** em testes iniciais. Isso **não é o custo total da arquitetura**.
+O faturamento depende de volume, configuração, região e recursos utilizados.
 
-Custos possíveis: Cloud Run, Cloud Build, Artifact Registry, Secret Manager, logs, rede e armazenamento do estado OAuth. Também há esforço de implantação, atualização e suporte.
+| Serviço | O que acompanhar |
+| --- | --- |
+| Cloud Run | CPU, memória, instâncias e requisições |
+| Cloud Build | Construções executadas |
+| Artifact Registry | Armazenamento de imagens |
+| Secret Manager | Segredos, versões e acessos |
+| Cloud Logging | Volume e retenção de registros |
+| Rede e armazenamento | Tráfego e persistência OAuth |
 
-| Critério | Integração gerenciada | Hospedagem própria |
-| --- | --- | --- |
-| Configuração | Pode ser mais simples | Exige IAM, OAuth e deploy |
-| Credenciais | Conforme oferta e custódia do fornecedor | Conforme implementação e controles internos |
-| Operação | Parte delegada ao fornecedor | Responsabilidade de quem hospeda |
-| Cobrança | Planos, limites e consumo | Infraestrutura, logs e manutenção |
+## Controle inicial
 
-**Não há economia comprovada** contra Composio ou qualquer integração gerenciada. Uma comparação válida precisa de cenários equivalentes, volume, SLA, manutenção e requisitos de segurança.
+1. Escolha uma região e configure um projeto de testes.
+2. Use `min-instances=0` para evitar instâncias mínimas contínuas quando apropriado.
+3. Acompanhe métricas e fatura de **todos os serviços**.
+4. Configure alertas de orçamento e revise quotas.
+5. Avalie o custo de manutenção além da infraestrutura.
 
-Alertas de orçamento não são necessariamente limites rígidos de gastos.
+Alertas de orçamento **não são uma trava automática** de gastos.
+
+[Cloud Run Pricing](https://cloud.google.com/run/pricing) · [Cloud Billing](https://cloud.google.com/billing/docs).

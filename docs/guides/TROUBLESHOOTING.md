@@ -1,29 +1,43 @@
-# Troubleshooting — erros reais e correções
+# 05 · Troubleshooting
 
 ## `redirect_uri_mismatch`
 
-**Sintoma:** o login OAuth não consegue concluir o retorno ao cliente. **Hipótese:** redirect URI ausente ou divergente.
+**Causa frequente:** URL de callback divergente da lista de URIs autorizadas.
 
-**Correção observada:** ajustar a lista de URIs autorizadas, incluindo callback do servidor. Compare URLs exatas, sem divulgar endpoints privados.
+**Verifique:** esquema `https`, domínio, porta, caminho, barra final e cliente OAuth correto.
+
+**Correção:** inclua a redirect URI exata esperada pelo servidor e pelo cliente.
 
 ## `invalid_client`
 
-**Sintoma:** credenciais OAuth rejeitadas.
+**Causa frequente:** Client ID/Secret incorreto, cliente errado ou versão antiga do segredo em execução.
 
-**Correção observada:** criar nova versão do segredo no Secret Manager e atualizar o serviço para utilizá-la.
+**Verifique:** ID utilizado, Secret Manager, versão e revisão atual do Cloud Run.
 
-**Limite de evidência:** foi levantada hipótese de caractere indevido na cópia do segredo, mas **não se confirmou a causa**.
+**Correção:** atualize a versão do segredo e faça o serviço consumir a versão corrigida. Não presuma que o erro foi causado por espaço ou quebra de linha sem evidência.
 
-## HTTP 401 sem login
+## HTTP `401`
 
-**Sintoma:** uma requisição anônima recebe `401 Unauthorized`. **Interpretação:** na configuração que exige autenticação, é resultado esperado de teste negativo, não erro de deploy.
+O servidor pode rejeitar chamadas anônimas à rota `/mcp`.
 
-## Ordem de investigação
+**Teste:** conclua OAuth com um cliente compatível e repita a solicitação autenticada. `401` sem login pode ser comportamento correto.
 
-1. Versão exata do upstream e status do Cloud Run.
-2. URLs e metadados do OAuth.
-3. IAM e acesso à versão correta do segredo.
-4. Nova tentativa de login com cliente de teste.
-5. Descoberta de ferramentas e consulta autorizada.
+## Ferramentas não aparecem
 
-[Consultar a matriz de testes](VALIDATION.md).
+- Confirme a URL terminando em `/mcp`.
+- Verifique se o cliente suporta o transporte do servidor.
+- Inspecione os registros de autenticação.
+- Verifique a configuração de namespaces e ferramentas da revisão upstream.
+
+## Contas não aparecem
+
+- Verifique a conta Google autorizada.
+- Verifique o acesso à conta ou MCC.
+- Confirme `customer_id` e `login_customer_id` quando aplicável.
+- Revise erros da Google Ads API e suas permissões.
+
+## Ordem recomendada
+
+`Cloud Run → transporte HTTP → OAuth → ferramentas MCP → Google Ads API`
+
+[← Validação](VALIDATION.md) · [Custos e operação →](OPERATIONS.md)

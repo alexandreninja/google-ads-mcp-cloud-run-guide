@@ -1,12 +1,13 @@
-# MCP: STDIO versus Streamable HTTP
+# STDIO e Streamable HTTP
 
-| Aspecto | STDIO | Streamable HTTP |
+| | STDIO | Streamable HTTP |
 | --- | --- | --- |
-| Execução | Processo local iniciado pelo cliente | Servidor remoto acessado via rede |
-| Melhor adequação | Desenvolvimento e uso individual | Clientes distribuídos e serviço compartilhável |
-| Transporte | Entrada/saída do processo | HTTP e sessões, conforme o protocolo |
-| Segurança | Credenciais e controles locais | Autenticação, rede, TLS, hospedagem e logs |
+| Execução | Processo local | Serviço acessado via HTTPS |
+| Cliente | Inicia o processo | Conecta-se ao endpoint |
+| Instalação | Em cada ambiente local | Servidor publicado separadamente |
+| Autenticação | Geralmente credenciais locais | Configuração de OAuth e controles de rede |
+| Uso típico | Testes e uso individual | Clientes remotos |
 
-A escolha de HTTP **não autoriza automaticamente múltiplos usuários**. Identidade, permissões e governança exigem avaliação adicional.
+Este guia utiliza **Streamable HTTP**. O servidor oficial também oferece execução local via STDIO.
 
-Fonte normativa: [transportes MCP](https://modelcontextprotocol.io/specification/latest/basic/transports).
+[Especificação MCP — transportes](https://modelcontextprotocol.io/specification/latest/basic/transports).
