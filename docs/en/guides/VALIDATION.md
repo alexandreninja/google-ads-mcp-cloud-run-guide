@@ -66,13 +66,32 @@ The baseline uses namespaces; older versions may have different names. The absen
 
 > Run `customers_list_accessible_customers`. Show the IDs I need to choose an authorized account. Do not try to query accounts I have not identified.
 
-The tool lists accounts **directly accessible** to the signed-in Google user, not necessarily every child account under a manager account (MCC). To query a child account, use its `customer_id`. When needed, `login_customer_id` is the ID of the manager account through which you have access; both follow the schema without hyphens. Having an ID does not grant permission.
+Choose an account you are authorized to query. `customer_id` identifies the target account; `login_customer_id` identifies the manager account when the call depends on that access.
+
+> [!NOTE]
+> This list does not traverse the MCC hierarchy: a child account accessible through a manager may not appear here. Confirm the child ID with the responsible team and use it as `customer_id`; include the MCC's `login_customer_id` in the query when access depends on it.
 
 ## 5. Run a small query
 
-First check metadata for `customer`, then look up `customer.id`, `customer.descriptive_name`, `customer.currency_code`, and `customer.time_zone`. Know the currency and time zone before interpreting performance. The `metadata_get_resource_metadata` tool reports available fields; do not ask the model to invent them.
+First check `customer` metadata to confirm the fields are available. Metadata shows what can be queried; use `search_search` to retrieve the account's values.
 
-Choose an authorized account, two complete dates, and up to ten rows. The example below shows **arguments for `search_search`**, not a Bash command or a complete HTTP request. Replace the ID and dates. Add `login_customer_id` only if your manager-account access requires it.
+Choose an authorized account. The following are **arguments for `search_search`**, not a Bash command or a complete HTTP request. Replace the ID and add `login_customer_id` only if your manager-account access requires it.
+
+~~~json
+{
+  "customer_id": "1234567890",
+  "resource": "customer",
+  "fields": [
+    "customer.id",
+    "customer.descriptive_name",
+    "customer.currency_code",
+    "customer.time_zone"
+  ],
+  "limit": 1
+}
+~~~
+
+Use the returned `currency_code` and `time_zone` when interpreting metrics and dates. Then choose two complete dates in the account's time zone and up to ten rows for the campaign query:
 
 ~~~json
 {
@@ -94,9 +113,26 @@ Choose an authorized account, two complete dates, and up to ten rows. The exampl
 
 Prompt to include:
 
-> Check metadata for `campaign` and verify that the example fields are compatible. Use the account and dates I confirm. Run the read-only query with no more than ten rows and no current-status filter for this historical period. Report the account's currency and time zone. Show the original `cost_micros` and calculate cost with code by dividing it by 1,000,000. Do not invent numbers, mix currencies, or treat ten rows as the account total. If there are no rows, explain that an empty result can be valid and suggest how to check the account, period, and activity.
+> Check metadata for `campaign` and verify that the example fields are compatible. Use the account and dates I confirm. Run the read-only query with no more than ten rows and no current-status filter for this historical period. Report the account's currency and time zone, and show the original `cost_micros`. Do not invent numbers, mix currencies, or treat ten rows as the account total. If there are no rows, explain that an empty result can be valid and suggest how to check the account, period, and activity.
 
-**Checkpoint:** compare a campaign in Google Ads using the same account, period, and time zone. Platform-reported metrics do not necessarily equal unique sign-ups in another database; a descriptive query does not show causation. Ten rows are for validation, not a complete report.
+Because `segments.date` is in the filter but not in the selected fields, each row aggregates a campaign across the full date range. If you add `segments.date` to `fields`, the result has one row per campaign and day. `limit: 10` caps returned rows; it is not the total for the period. If you add `campaign.status`, interpret it as the campaign's current status, not its status on each past date.
+
+Convert micros with decimal arithmetic in code. This example is fictional; check the `currency_code` value by reading `customer` after confirming the field is available in metadata. The value below is not a real account response:
+
+~~~python
+from decimal import Decimal
+
+currency_code = "BRL"  # fictional; replace with the value read from the account
+cost_micros = 1_234_567  # fictional metrics.cost_micros example
+cost = Decimal(cost_micros) / Decimal(1_000_000)
+
+print(f"{currency_code} {cost}")  # BRL 1.234567
+~~~
+
+**Checkpoint:** compare a campaign in Google Ads using the same account, period, and time zone. Platform-attributed metrics are not the same as validated records in another database. Use SQL, Python, and business rules for reproducible calculations and reconciliation; ask the LLM to interpret checked results and suggest hypotheses.
+
+> [!IMPORTANT]
+> MCP makes this query on demand. This guide does not configure recurring extraction, analytical storage, or a dashboard feed.
 
 ## 6. Record what actually happened
 

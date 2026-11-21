@@ -6,7 +6,11 @@ Think of this as a small workshop: Cloud Build assembles the application, Artifa
 
 **Before you start:** complete the [prerequisites](PREREQUISITES.md), including billing, permissions, and Google Ads API access level. Use a dedicated lab project and **the same project for OAuth, the API, and runtime** in this walkthrough. Your organization may require IT support for IAM, OAuth, and HTTP exposure.
 
-**Basis for this revision:** commands and configuration were checked against official sources and upstream commit **44ca7770519362c8f334875477e1ceb499f8d2dd** on November 21, 2026. The package in that commit declares 0.0.6; this does not present it as a tagged stable release. This documentation review did not perform a new deployment in Google Cloud. Upstream dependencies and base images have moving ranges/tags: pinning the commit does not make every build identical. Record the resulting digest.
+<details>
+<summary>Technical basis and scope of this review</summary>
+
+This guide uses upstream commit `44ca7770519362c8f334875477e1ceb499f8d2dd`, checked on November 21, 2026. The package declares 0.0.6, but this commit is not presented as a tagged stable release. This documentation review did not run a new build or deploy in Google Cloud. Upstream dependencies and base images use moving ranges or tags; record the resulting digest.
+</details>
 
 Run one command at a time and inspect its output. If any command fails, stop before the next one: interactive Bash does not automatically stop the rest of a pasted block. A checkpoint is valid only when all preceding commands succeeded.
 
@@ -92,12 +96,21 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID" \
   --member="serviceAccount:$BUILD_SA_EMAIL" --role=roles/logging.logWriter
 ~~~
 
-The human Cloud Shell operator must be able to upload source to the bucket and act as both service accounts. If this access is missing, an authorized administrator can grant it on these resources only. Replace SEU_EMAIL_GOOGLE with the active user email checked in step 2. This example assumes a human user, not a service account or group.
+The human Cloud Shell operator must be able to upload the source, inspect build status, read the image for deployment, and act as both service accounts. Replace `SEU_EMAIL_GOOGLE` with the active user email checked in step 2. This example assumes a human user, not a service account or group. The IAM bindings below must be applied by someone authorized to change policies on these resources. If you do not have that permission, ask an administrator to run the grant commands with `OPERATOR_EMAIL` set to the identity that will build and deploy.
 
 ~~~bash
 export OPERATOR_EMAIL="SEU_EMAIL_GOOGLE"
 gcloud storage buckets add-iam-policy-binding "$SOURCE_BUCKET" \
   --member="user:$OPERATOR_EMAIL" --role=roles/storage.objectCreator
+gcloud storage buckets add-iam-policy-binding "$SOURCE_BUCKET" \
+  --member="user:$OPERATOR_EMAIL" --role=roles/storage.legacyBucketReader
+gcloud artifacts repositories add-iam-policy-binding "$REPOSITORY" \
+  --location="$REGION" --member="user:$OPERATOR_EMAIL" \
+  --role=roles/artifactregistry.reader --project="$PROJECT_ID"
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="user:$OPERATOR_EMAIL" --role=roles/cloudbuild.builds.editor
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="user:$OPERATOR_EMAIL" --role=roles/serviceusage.serviceUsageConsumer
 for ACT_AS_EMAIL in "$BUILD_SA_EMAIL" "$RUNTIME_SA_EMAIL"; do
   gcloud iam service-accounts add-iam-policy-binding "$ACT_AS_EMAIL" \
     --member="user:$OPERATOR_EMAIL" --role=roles/iam.serviceAccountUser \
@@ -105,7 +118,9 @@ for ACT_AS_EMAIL in "$BUILD_SA_EMAIL" "$RUNTIME_SA_EMAIL"; do
 done
 ~~~
 
-**Checkpoint:** both service accounts, the image repository, and the bucket exist. If a resource already exists, check the project and region before reusing it. Do not treat `Permission denied` as `Already exists`. The person running builds/deployments needs permission to act as the corresponding accounts (`iam.serviceAccounts.actAs`); ask an administrator for the scoped access listed in the prerequisites instead of granting Owner indiscriminately.
+The `roles/storage.legacyBucketReader` role includes `storage.buckets.get`, needed to inspect bucket metadata, and also allows listing object names and metadata; keep this bucket dedicated to build source archives. `roles/cloudbuild.builds.editor` allows creating and inspecting builds; `roles/serviceusage.serviceUsageConsumer` includes `serviceusage.services.use`, required for `gcloud builds` commands when using that role. The build account still has source read, Artifact Registry write, and log write access; the operator gets image read on the repository for deployment. See the [Cloud Build](https://docs.cloud.google.com/build/docs/iam-roles-permissions) and [gcloud builds command access](https://docs.cloud.google.com/build/docs/securing-builds/configure-access-to-resources), [Cloud Storage](https://docs.cloud.google.com/storage/docs/access-control/iam-roles), and [Artifact Registry](https://cloud.google.com/artifact-registry/docs/access-control) role documentation.
+
+**Checkpoint:** confirm `OPERATOR_EMAIL` is the active identity from step 2 and that it has `roles/storage.objectCreator` and `roles/storage.legacyBucketReader` on the bucket; `roles/artifactregistry.reader` on the repository; `roles/cloudbuild.builds.editor` and `roles/serviceusage.serviceUsageConsumer` on the project; and `roles/iam.serviceAccountUser` on both service accounts. The build account needs the three bindings for it in the previous block. To deploy the service, the operator also needs the Cloud Run permissions listed in the [prerequisites](PREREQUISITES.md). If a resource already exists, check the project and region before reusing it. Do not treat `Permission denied` as `Already exists` or grant `Owner` or `Storage Admin` to work around a missing permission.
 
 ## 5. Keep authorization outside the container
 
@@ -139,9 +154,13 @@ git -C "$UPSTREAM_DIR" diff -- Dockerfile
 cat "$UPSTREAM_DIR/tools_config.yaml"
 ~~~
 
-The helper makes local changes only: it checks the commit, enables the optional Firestore dependency in the Dockerfile, and copies the configuration that exposes only customers, search, and metadata. Labels and assets are disabled. It preserves the rest of the Dockerfile, including the upstream FastMCP compatibility adjustments. Read those changes before adopting another version.
+The helper accepts only the official origin and pinned commit in a checkout with no modifications, untracked files, or ignored files. It prepares that checkout locally: it enables the optional Firestore dependency in the Dockerfile and writes the configuration that exposes only customers, search, and metadata, with labels and assets disabled. It preserves the rest of the Dockerfile, including the upstream FastMCP compatibility adjustments.
 
-**Checkpoint:** the SHA is correct; the install includes the `.[firestore]` extra; labels and assets are `false`. This restriction applies to the tools in this image. It does not reduce the `adwords` OAuth scope, the Google identity's permissions, or other API access.
+> [!IMPORTANT]
+> Continue only if the SHA is `44ca7770519362c8f334875477e1ceb499f8d2dd`, the install includes the `.[firestore]` extra, and `labels` and `assets` are `false`. This limits the tools available in this image; it does not reduce the `adwords` OAuth scope, the Google identity's permissions, or other API access.
+
+> [!NOTE]
+> A successful run modifies the prepared checkout and cannot be applied again in that folder. To repeat preparation, make a fresh clone of the pinned commit in a different folder, update `UPSTREAM_DIR`, and restart this step. Do not reset or destructively clean the existing checkout.
 
 ~~~bash
 gcloud builds submit "$UPSTREAM_DIR" \
@@ -157,6 +176,9 @@ gcloud builds submit "$UPSTREAM_DIR" \
 ## 8. Deploy and find the URL
 
 This is a pilot with at most one instance and scale-to-zero. It keeps upstream stateful HTTP and the default Cloud Run concurrency. Do not set concurrency to 1 with long-lived SSE streams: one connection can occupy the only slot. This is not a high-availability architecture. The 300-second timeout ends long-running HTTP requests after five minutes; clients that keep streams open must be able to reconnect.
+
+> [!WARNING]
+> `--allow-unauthenticated` leaves Cloud Run ingress reachable from the internet to start OAuth. OAuth protects the tools, but does not block anonymous traffic to the endpoint or charges that traffic may incur. If organizational policy forbids public exposure, stop and ask IT for a compatible architecture; do not work around the policy.
 
 ~~~bash
 gcloud run deploy "$SERVICE" \
@@ -178,8 +200,6 @@ gcloud run services update "$SERVICE" --region="$REGION" \
 ~~~
 
 In the first revision, the base URL is still the local default; do not start sign-in before the update. **Checkpoint:** the latest revision is ready and the base URL is the generated HTTPS URL, without `/mcp`. Now finish [registering the OAuth callback](../guides/OAUTH-AND-SECRETS.md#after-deployment-register-the-callback).
-
-`--allow-unauthenticated` makes the endpoint reachable at the Cloud Run IAM layer for the OAuth flow. The server requires OAuth for tools, but the endpoint is exposed to the internet and may receive traffic that incurs charges. This does not create a list of authorized collaborators or certify the service. If policy forbids public exposure, pause and ask IT for a compatible architecture; do not work around the policy.
 
 ## 9. Get the first piece of evidence
 

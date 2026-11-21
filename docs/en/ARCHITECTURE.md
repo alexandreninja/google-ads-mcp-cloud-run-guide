@@ -2,7 +2,9 @@
 
 ![Google Ads MCP architecture](../assets/architecture.svg)
 
-This guide describes an image built from the official [`googleads/google-ads-mcp`](https://github.com/googleads/google-ads-mcp) repository, pinned to commit [`44ca7770519362c8f334875477e1ceb499f8d2dd`](https://github.com/googleads/google-ads-mcp/tree/44ca7770519362c8f334875477e1ceb499f8d2dd) for this technical review on November 21, 2026. That commit declares version `0.0.6`; update the pin and re-evaluate configuration, authentication, and tools before using another commit.
+The article *Construir ou integrar?* describes two complementary layers: code and SQL for reproducible calculations and business rules, and language models for interpreting validated results. This guide focuses on access to one data source: the Google Ads API, through the official MCP server hosted on Cloud Run.
+
+Use the component map below to understand what each service does. Then follow the [deployment guide](getting-started/DEPLOY.md), which pins the upstream version and provides commands and checkpoints.
 
 ## Components
 

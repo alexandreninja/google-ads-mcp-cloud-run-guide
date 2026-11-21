@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Check local Markdown links, JSON examples and Bash syntax without running cloud commands."""
+"""Check local links and example syntax without executing documented commands."""
+import ast
 import json
 from pathlib import Path
 import re
@@ -59,6 +60,11 @@ def check():
                             json.loads(value)
                         except ValueError as error:
                             errors.append(f"{path.relative_to(ROOT)}:{number}: JSON: {error}")
+                    elif language == "python":
+                        try:
+                            ast.parse(value)
+                        except SyntaxError as error:
+                            errors.append(f"{path.relative_to(ROOT)}:{number}: Python: {error}")
                     fence = None
                 continue
             if fence is not None:

@@ -3,11 +3,11 @@ title: Início · scaffold experimental
 description: Resumo de navegação para o tutorial Google Ads MCP no Cloud Run.
 ---
 
-## Que resposta você quer conferir?
+## Do artigo à implementação
 
-Por exemplo: quais campanhas consumiram mais orçamento nos últimos 30 dias — e como confirmar os dados? Este portal é um resumo experimental. Para executar o tutorial, use os documentos canônicos do repositório.
+**Construir ou integrar?** O experimento no Sebrae Rio explorou uma implantação própria do servidor oficial Google Ads MCP no Cloud Run. O artigo conta as decisões e os aprendizados; o repositório organiza o passo a passo para reproduzir o percurso.
 
-O fluxo conecta um cliente MCP ao servidor oficial hospedado no Cloud Run; esse servidor consulta a Google Ads API com a autorização configurada. A conexão não garante que sua organização tenha habilitado a API, aprovado o acesso de produção ou permitido todas as ferramentas.
+Este portal é um resumo experimental. Para executar o tutorial, siga os documentos canônicos abaixo, com comandos e checkpoints atualizados em um só lugar.
 
 ## Comece pelo roteiro oficial
 

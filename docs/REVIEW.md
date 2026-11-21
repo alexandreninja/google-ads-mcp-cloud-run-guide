@@ -1,36 +1,29 @@
-# Revisão documental · 21 de novembro de 2026
+# Verificações do guia · 21 de novembro de 2026
 
-Esta revisão avalia o **guia**, não certifica uma implantação. O baseline upstream é o commit 44ca7770519362c8f334875477e1ceb499f8d2dd.
+Este registro reúne o escopo e as evidências da revisão documental. A referência do servidor é o commit `44ca7770519362c8f334875477e1ceb499f8d2dd`, registrado em [upstream.json](../config/upstream.json).
 
-## Parecer final
+## O que mudou nesta rodada
 
-A revisão final do orquestrador principal considera a documentação apta para publicação, com **nota editorial interna de 9,0/10**. A nota é um julgamento sobre clareza, rastreabilidade e capacidade de orientar a reprodução; não é um benchmark, uma certificação ou uma taxa de sucesso em contas Google Cloud.
+- Abertura ligada ao artigo **Construir ou integrar?**, navegação por objetivo e detalhes técnicos revelados ao longo do percurso.
+- Alertas de custos, credenciais e configuração posicionados nas respectivas etapas, com exemplos equivalentes em português e inglês.
+- Permissões do operador para acompanhar o build, enviar a origem e ler a imagem explicitadas na implantação.
+- Preparo da origem condicionado a repositório oficial, commit fixado e checkout limpo, antes de qualquer gravação.
+- Validação com granularidade dos dados, moeda, fuso e conversão de micros por código.
 
-| Critério | Peso | Nota interna |
-| --- | --- | --- |
-| Exatidão técnica e fontes | 30% | 9,0 |
-| Sequência de reprodução e checkpoints | 30% | 9,0 |
-| Didática para quem vem do marketing | 20% | 9,0 |
-| Redação em português e inglês | 20% | 9,0 |
+## Verificações locais
 
-As lacunas bloqueadoras identificadas foram corrigidas: requisitos atuais de acesso à API; callback do servidor separado do callback do cliente; versões de segredos; chave de armazenamento independente; dependência e banco Firestore; superfície de ferramentas limitada; identidades de build/execução; permissões do operador; configuração específica de cliente; e paridade dos exemplos PT/EN.
+| Verificação | O que cobre |
+| --- | --- |
+| `check_docs.py` | Links e âncoras locais, JSON e sintaxe Bash/Python; sem executar comandos Cloud |
+| `check_translations.py` | Equivalência dos exemplos executáveis PT/EN |
+| Testes do helper | Repositórios Git temporários: origem, commit, alterações locais e preparo da imagem |
+| Parser upstream | Aceitação do perfil `customers`, `search` e `metadata`, com `labels` e `assets` desabilitados |
+| Inspeção do build | Extra Firestore, imagem parametrizada e logs no Cloud Logging |
+| `git diff --check` | Erros de whitespace no diff |
 
-## Método
+Nesta rodada, as verificações acima passaram. Os testes do helper executaram **11 casos em repositórios Git temporários reais**. A varredura heurística do conteúdo textual não encontrou padrões de credenciais; isso não substitui uma análise de segurança do ambiente.
 
-O fechamento combina revisão de redação, crítica técnica, conferência de fontes primárias e verificações locais. O parecer é uma avaliação interna da revisão integrada; não representa certificação externa nem homologação de um ambiente Cloud.
-
-## Evidências verificadas
-
-- Verificação de links locais, âncoras, blocos JSON e sintaxe Bash: passou.
-- Comparação de exemplos executáveis entre os documentos PT/EN: passou, sem divergências.
-- Cinco testes offline do helper: passaram. Cobrem revisão upstream incorreta, Dockerfile incompatível, licença ausente, idempotência e configuração de ferramentas.
-- Configuração de leitura aceita pelo parser ToolsConfig do upstream fixado; categorias assets e labels desabilitadas.
-- YAML de build conferido: imagem parametrizada e logs no Cloud Logging.
-- Varredura heurística de credenciais no conteúdo final: sem correspondências.
-- Auditoria dos quatro commits anteriores: 79 blobs textuais únicos examinados pelo auditor, sem achados relatados.
-- Ajuda local do Codex para cadastro HTTP e login MCP: inspecionada.
-
-Para repetir as verificações locais, a partir da raiz do repositório:
+Para repetir as verificações automatizadas a partir da raiz:
 
 ~~~bash
 python3 scripts/check_docs.py
@@ -39,10 +32,11 @@ python3 -m unittest discover -s scripts -p 'test_*.py' -v
 git diff --check
 ~~~
 
-## O que não foi executado
+## Limite das evidências
 
-Não foram realizados novo build de contêiner, deploy no Google Cloud, fluxo OAuth real nem consulta a contas Google Ads nesta revisão. As verificações locais não comprovam permissões de um projeto, disponibilidade de dependências externas, aprovação da API ou compatibilidade de todos os clientes. Os vídeos tiveram metadados conferidos, não foram assistidos integralmente. O scaffold em site continua experimental e não foi publicado como portal.
+> [!NOTE]
+> Esta revisão não executou novo build de contêiner, deploy no Google Cloud, fluxo OAuth real ou consulta a contas Google Ads. As verificações locais avaliam o material e o preparo da origem; os checkpoints de implantação precisam ser executados no ambiente de destino.
 
-A evidência de uma implantação real deve ser preenchida por quem seguir a [matriz de validação](guides/VALIDATION.md). Custos, disponibilidade e uso institucional continuam sujeitos à avaliação do ambiente de destino.
+A [matriz de validação](guides/VALIDATION.md) orienta a registrar build, revisão, login, ferramentas e consulta. Os vídeos complementares tiveram metadados conferidos, sem revisão integral do conteúdo. O scaffold em `site/` permanece experimental.
 
 [English](en/REVIEW.md) · [Índice](README.md)

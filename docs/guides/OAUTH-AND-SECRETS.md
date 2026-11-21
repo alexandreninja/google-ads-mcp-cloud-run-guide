@@ -23,7 +23,8 @@ export OAUTH_CLIENT_ID="SEU_CLIENT_ID.apps.googleusercontent.com"
 
 ## Criar segredos com valores, sem gravá-los no histórico
 
-Execute no **Bash do Cloud Shell**, fora de gravações/compartilhamentos de tela. Não habilite set -x. Não cole credenciais em chat, issue, arquivo versionado ou diretamente como argumento de comando. O read -s recebe a credencial sem exibi-la; apenas a referência à variável fica no histórico.
+> [!WARNING]
+> Execute no **Bash do Cloud Shell**, sem gravação ou compartilhamento de tela e sem `set -x`. O `read -s` recebe o segredo sem exibi-lo. Mantenha credenciais fora de chats, issues, arquivos versionados e argumentos de comandos.
 
 ~~~bash
 read -r -s -p "OAuth Client Secret: " TASK_OAUTH_SECRET
@@ -63,7 +64,8 @@ A chave JWT mantém assinaturas consistentes entre reinícios. A chave de armaze
 printf '%s/auth/callback\n' "$SERVICE_URL"
 ~~~
 
-Volte ao cliente OAuth web e adicione a saída exata em **Authorized redirect URIs/URIs de redirecionamento autorizadas**. Salve. O caminho /auth/callback é o padrão do GoogleProvider/FastMCP usado no baseline; o upstream não o sobrescreve em ads_mcp/coordinator.py.
+> [!IMPORTANT]
+> No cliente OAuth web, adicione a saída exata em **Authorized redirect URIs/URIs de redirecionamento autorizadas** e salve. O callback do servidor é `/auth/callback`; o endpoint do cliente MCP é `/mcp`. Use cada endereço no campo correspondente abaixo.
 
 | Endereço | Uso |
 | --- | --- |
@@ -74,7 +76,8 @@ Volte ao cliente OAuth web e adicione a saída exata em **Authorized redirect UR
 
 Se a interface exigir origem JavaScript, use a URL base HTTPS, sem caminho. Origem não substitui URI de redirecionamento. Esquema, hostname, caminho e barra final precisam coincidir; divergências causam redirect_uri_mismatch.
 
-Aplicativos externos em Testing podem emitir refresh tokens com expiração de sete dias quando pedem escopos além de identidade básica; este servidor pede adwords. Nova autorização pode ser necessária. Sair de Testing exige revisar público, verificação e governança, não apenas mudar um seletor. Consulte as [referências oficiais](../REFERENCES.md) se interface ou política mudar.
+> [!NOTE]
+> Aplicativos externos em Testing podem emitir refresh tokens com expiração de sete dias quando pedem escopos além de identidade básica; este servidor pede adwords. Nova autorização pode ser necessária. Sair de Testing exige revisar público, verificação e governança, não apenas mudar um seletor. Consulte as [referências oficiais](../REFERENCES.md) se interface ou política mudar.
 
 **Checkpoint final:** a URL base configurada no Cloud Run e o callback cadastrado apontam para o mesmo serviço. Faça a [validação com um cliente](VALIDATION.md).
 

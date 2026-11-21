@@ -46,7 +46,7 @@ The guide uses its own bucket through --gcs-source-staging-dir. The person or au
 
 If the error names storage.objects.create, ask an administrator for upload permission scoped to the staging bucket for the identity running the CLI. Deployment step 4 includes Object Creator for that operator. The operator also needs storage.buckets.get for bucket metadata. Do not replace the build account's read role with Owner.
 
-The submitter also needs cloudbuild.builds.create in the project and iam.serviceAccounts.actAs on the selected build service account. See the [permissions table](../getting-started/PREREQUISITES.md#permissions-to-request-from-an-administrator). If the message names another permission, ask the administrator to inspect that exact permission and the applicable organization policy.
+The submitter also needs cloudbuild.builds.create in the project and iam.serviceAccounts.actAs on the selected build service account. See the [permissions table](../getting-started/PREREQUISITES.md). If the message names another permission, ask the administrator to inspect that exact permission and the applicable organization policy.
 
 ### Building succeeds, but pushing to Artifact Registry is denied
 

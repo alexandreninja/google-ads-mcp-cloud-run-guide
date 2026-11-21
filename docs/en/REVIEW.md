@@ -1,36 +1,29 @@
-# Documentation review · November 21, 2026
+# Guide checks · November 21, 2026
 
-This review evaluates the **guide**, not a certified deployment. The upstream baseline is commit 44ca7770519362c8f334875477e1ceb499f8d2dd.
+This record describes the scope and evidence of the documentation review. The server reference is commit `44ca7770519362c8f334875477e1ceb499f8d2dd`, recorded in [upstream.json](../../config/upstream.json).
 
-## Final assessment
+## Changes in this round
 
-The primary orchestrator's final review considers the documentation ready for publication, with an **internal editorial score of 9.0/10**. The score is a judgment of clarity, traceability, and the ability to guide reproduction. It is not a benchmark, certification, or success rate across Google Cloud accounts.
+- An opening connected to *Construir ou integrar?*, navigation by goal, and technical detail introduced as needed.
+- Cost, credential, and configuration alerts placed at the relevant steps, with equivalent examples in Portuguese and English.
+- Operator permissions for monitoring builds, uploading source, and reading images made explicit in deployment.
+- Source preparation requires the official repository, pinned commit, and a clean checkout before writing any files.
+- Validation covers data granularity, currency, time zone, and conversion from micros using code.
 
-| Criterion | Weight | Internal score |
-| --- | --- | --- |
-| Technical accuracy and sources | 30% | 9.0 |
-| Reproduction sequence and checkpoints | 30% | 9.0 |
-| Teaching for a marketing audience | 20% | 9.0 |
-| Portuguese and English writing | 20% | 9.0 |
+## Local checks
 
-The identified blockers were addressed: current API access requirements; server versus client callbacks; numeric secret versions; an independent storage key; the Firestore dependency and database; a restricted tool surface; separate build/runtime identities; operator permissions; client-specific configuration; and equivalent PT/EN executable examples.
+| Check | Coverage |
+| --- | --- |
+| `check_docs.py` | Local links and anchors, JSON, and Bash/Python syntax; no Cloud commands executed |
+| `check_translations.py` | Equivalent executable examples across PT/EN documents |
+| Helper tests | Temporary Git repositories: origin, commit, local changes, and image preparation |
+| Upstream parser | Acceptance of the `customers`, `search`, and `metadata` profile, with `labels` and `assets` disabled |
+| Build inspection | Firestore extra, parameterized image, and Cloud Logging output |
+| `git diff --check` | Whitespace errors in the diff |
 
-## Method
+The checks above passed in this round. The helper tests ran **11 cases using real temporary Git repositories**. A heuristic scan of text content found no credential patterns; this does not replace a security review of the target environment.
 
-The final assessment combines writing review, technical criticism, primary-source checks, and local validation. It is an internal assessment of the integrated guide, not an external certification or acceptance test of a Cloud environment.
-
-## Evidence checked
-
-- Local links, heading anchors, JSON examples, and Bash syntax: passed.
-- Executable-example comparison across PT/EN documents: passed, with no differences.
-- Five offline helper tests: passed. They cover a wrong upstream revision, unexpected Dockerfile, missing license, idempotence, and tool configuration.
-- Read-only configuration accepted by the pinned upstream ToolsConfig parser; assets and labels disabled.
-- Build YAML checked: parameterized image and Cloud Logging output.
-- Final-content credential-pattern scan: no matches.
-- Audit of the four prior commits: the auditor examined 79 unique text blobs and reported no findings.
-- Installed Codex help for HTTP registration and MCP login: inspected.
-
-To repeat the local checks from the repository root:
+To repeat the automated checks from the repository root:
 
 ~~~bash
 python3 scripts/check_docs.py
@@ -39,10 +32,11 @@ python3 -m unittest discover -s scripts -p 'test_*.py' -v
 git diff --check
 ~~~
 
-## What was not run
+## Evidence limits
 
-This review did not run a new container build, Google Cloud deployment, live OAuth flow, or query against Google Ads accounts. Local checks do not prove a project's permissions, external dependency availability, API approval, or compatibility with every client. Video metadata was checked; videos were not watched in full. The site scaffold remains experimental and was not published as a portal.
+> [!NOTE]
+> This review did not run a new container build, Google Cloud deployment, live OAuth flow, or query against Google Ads accounts. Local checks assess the material and source preparation; deployment checkpoints must be run in the target environment.
 
-Whoever follows the guide must record live-deployment evidence using the [validation matrix](guides/VALIDATION.md). Costs, availability, and organizational use still require assessment in the target environment.
+The [validation matrix](guides/VALIDATION.md) explains how to record the build, revision, sign-in, tools, and query. Supplementary videos had their metadata checked, without a full content review. The `site/` scaffold remains experimental.
 
 [Português](../REVIEW.md) · [Index](README.md)

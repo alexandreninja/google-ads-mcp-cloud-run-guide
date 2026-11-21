@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Compare executable Bash/JSON examples across Portuguese and English guides."""
+"""Compare executable Bash/JSON/Python examples across PT/EN guides."""
+import ast
 from pathlib import Path
 import difflib
 import re
@@ -19,6 +20,8 @@ def commands(path):
             elif match[1][0] == fence[0]:
                 if language in {"bash", "shell", "sh", "json"}:
                     out.extend(l.strip() for l in block if l.strip() and not l.lstrip().startswith("#"))
+                elif language == "python":
+                    out.append(ast.dump(ast.parse("\n".join(block))))
                 fence = None
         elif fence:
             block.append(line)
