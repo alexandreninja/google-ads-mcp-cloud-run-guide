@@ -8,7 +8,7 @@
 
 This guide grew out of a challenge at Sebrae Rio: modernizing marketing dashboards and exploring how AI could help interpret validated data. After considering managed integration and self-hosting, the experiment used the official [Google Ads MCP](https://github.com/googleads/google-ads-mcp) server on Cloud Run.
 
-The repository can be used independently. To explain the motivation behind it, I published the LinkedIn article **Construir ou integrar? O que aprendi implementando um Google Ads MCP com Cloud Run e OAuth 2.0**. It covers the decisions, authentication errors, and lessons that led to this guide. That background helps explain the context; **here, the experience becomes a step-by-step path**, including for people coming from marketing who are beginning to work with cloud services and AI.
+The repository can be used independently. To explain the motivation behind it, I published the LinkedIn article [**Construir ou integrar? O que aprendi implementando um Google Ads MCP com Cloud Run e OAuth 2.0**](https://www.linkedin.com/pulse/construir-ou-integrar-o-que-aprendi-implementando-um-alexandre-ssyie). It covers the decisions, authentication errors, and lessons that led to this guide. That background helps explain the context; **here, the experience becomes a step-by-step path**, including for people coming from marketing who are beginning to work with cloud services and AI.
 
 ## 🧭 Start here
 
