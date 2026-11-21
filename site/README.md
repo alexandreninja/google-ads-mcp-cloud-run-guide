@@ -1,12 +1,5 @@
-# Portal de documentação
+# Portal de documentação · scaffold experimental
 
-Navegação para os guias de implantação do Google Ads MCP. Construído com [Astro](https://astro.build/) e [Starlight](https://starlight.astro.build/).
+Esta pasta contém um rascunho de portal Astro/Starlight para navegação. As páginas são resumos experimentais, sem procedimentos completos e sem revisão de homologação. O [índice canônico da documentação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/README.md) contém os procedimentos completos.
 
-```bash
-cd site
-npm install
-npm run dev
-npm run build
-```
-
-Os procedimentos completos estão em [docs/](../docs/README.md). A publicação do site é opcional.
+Antes de seguir um resumo, abra o documento completo indicado por ele. Não execute instruções copiadas do site sem conferir o guia canônico, a versão fixada do servidor e as permissões do projeto.

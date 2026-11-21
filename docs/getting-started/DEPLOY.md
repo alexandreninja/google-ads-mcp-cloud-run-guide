@@ -1,126 +1,191 @@
-# 02 · Implantação no Google Cloud Run
+# 02 · Do código ao servidor: implantação no Cloud Run
 
-Guia de comandos parametrizados para o [Google Ads MCP oficial](https://github.com/googleads/google-ads-mcp). Execute a partir do diretório do código oficial, não deste repositório de documentação.
+[English](../en/getting-started/DEPLOY.md) · [Índice](../README.md)
 
-## 1. Definir variáveis
+Vamos montar uma pequena oficina: o Cloud Build monta a aplicação, o Artifact Registry guarda a imagem e o Cloud Run a executa. O Firestore preserva o estado de autorização quando o contêiner reinicia. Cada peça tem um motivo; confira o resultado antes de encaixar a próxima.
 
-```bash
-# Substitua SEU_PROJECT_ID pelo identificador do projeto no Google Cloud.
+**Antes de começar:** conclua os [pré-requisitos](PREREQUISITES.md), inclusive faturamento, permissões e nível de acesso à Google Ads API. Use um projeto de laboratório dedicado e **o mesmo projeto para OAuth, API e execução** neste roteiro. Organizações podem exigir apoio de TI para IAM, OAuth e exposição HTTP.
+
+**Base desta revisão:** comandos e configurações foram confrontados com fontes oficiais e com o commit upstream **44ca7770519362c8f334875477e1ceb499f8d2dd**, em 21/11/2026. O pacote desse commit declara 0.0.6; isso não o apresenta como uma release estável marcada. Esta revisão documental não realizou uma nova implantação no Google Cloud. Dependências e imagens-base upstream têm intervalos/tags móveis: fixar o commit não torna todos os builds idênticos. Registre o digest obtido.
+
+Execute um comando por vez e confira sua saída. Se qualquer comando falhar, pare antes do próximo: o Bash interativo não interrompe automaticamente o restante de um bloco colado. Os checkpoints abaixo só valem quando todos os comandos anteriores terminaram com sucesso.
+
+## 1. Abrir a bancada
+
+No [Google Cloud Console](https://console.cloud.google.com/), abra **Cloud Shell** pelo ícone de terminal no alto da página. Autorize a sessão se o Console solicitar. Os comandos usam **Bash no Cloud Shell**; não os execute diretamente no PowerShell ou Prompt de Comando do Windows.
+
+~~~bash
+git clone https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide.git
+cd google-ads-mcp-cloud-run-guide
+export GUIDE_DIR="$PWD"
+~~~
+
+Se a pasta já existir, entre no clone correto; não apague seu trabalho para repetir o exemplo. **Checkpoint:** a saída de pwd termina em google-ads-mcp-cloud-run-guide e a pasta config contém as configurações do guia.
+
+## 2. Identificar o projeto antes de criar recursos
+
+Substitua apenas SEU_PROJECT_ID. O ID não é o nome de exibição nem o número do projeto. A região é um exemplo; escolha localização e custos conforme sua necessidade e as regras da organização.
+
+~~~bash
 export PROJECT_ID="SEU_PROJECT_ID"
-
-# Define onde os recursos serão criados.
 export REGION="us-central1"
-
-# Nomes do repositório de imagens, do serviço e da identidade de execução.
 export REPOSITORY="mcp-servers"
 export SERVICE="google-ads-mcp"
-export RUNTIME_SA="google-ads-mcp-runtime"
+export RUNTIME_SA_NAME="google-ads-mcp-runtime"
+export BUILD_SA_NAME="google-ads-mcp-build"
+export RUNTIME_SA_EMAIL="$RUNTIME_SA_NAME@$PROJECT_ID.iam.gserviceaccount.com"
+export BUILD_SA_EMAIL="$BUILD_SA_NAME@$PROJECT_ID.iam.gserviceaccount.com"
+export SOURCE_BUCKET="gs://$PROJECT_ID-mcp-source"
+export FIRESTORE_DATABASE="(default)"
+export UPSTREAM_COMMIT="44ca7770519362c8f334875477e1ceb499f8d2dd"
+export UPSTREAM_DIR="$GUIDE_DIR/.work/google-ads-mcp"
+export IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$SERVICE:44ca77705193"
 
-# Seleciona o projeto para evitar criar recursos na conta errada.
 gcloud config set project "$PROJECT_ID"
-```
+gcloud projects describe "$PROJECT_ID" --format='value(projectId,name)'
+gcloud auth list --filter=status:ACTIVE --format='value(account)'
+~~~
 
-## 2. Criar o Artifact Registry
+**Checkpoint:** projeto e identidade correspondem ao laboratório autorizado. Confira o faturamento no Console e defina [alertas de orçamento](../guides/COSTS.md). Os próximos passos criam recursos e podem gerar cobrança. Limitar instâncias não limita o valor da fatura. Se o Cloud Shell reiniciar, redefina as variáveis desta seção.
 
-```bash
-# Cria o repositório Docker que armazenará a imagem do servidor.
-# Execute apenas se o repositório ainda não existir nesta região.
+## 3. Habilitar as APIs
+
+~~~bash
+gcloud services enable \
+  googleads.googleapis.com \
+  run.googleapis.com \
+  cloudbuild.googleapis.com \
+  artifactregistry.googleapis.com \
+  secretmanager.googleapis.com \
+  firestore.googleapis.com \
+  storage.googleapis.com \
+  logging.googleapis.com \
+  iam.googleapis.com \
+  --project="$PROJECT_ID"
+~~~
+
+**Checkpoint:** o comando termina sem erro. Habilitar a Google Ads API concede acesso de teste; consultar contas de produção requer o nível adequado no projeto OAuth. Desde 09/09/2026, o onboarding usa o projeto Cloud; não solicite developer token seguindo vídeos antigos. Veja os [pré-requisitos](PREREQUISITES.md).
+
+## 4. Separar identidades e criar os depósitos
+
+A identidade que constrói a imagem não precisa ler segredos OAuth. A identidade que executa o servidor não precisa construir imagens. Essa separação reduz o alcance de cada conta de serviço.
+
+~~~bash
+gcloud iam service-accounts create "$BUILD_SA_NAME" \
+  --display-name="Build do Google Ads MCP" --project="$PROJECT_ID"
+gcloud iam service-accounts create "$RUNTIME_SA_NAME" \
+  --display-name="Execucao do Google Ads MCP" --project="$PROJECT_ID"
+
 gcloud artifacts repositories create "$REPOSITORY" \
-  --repository-format=docker \
-  --location="$REGION" \
-  --description="Imagens de contêiner do servidor MCP"
-```
+  --repository-format=docker --location="$REGION" \
+  --description="Imagens do laboratorio MCP" --project="$PROJECT_ID"
 
-Se o repositório já existir, ignore esta criação.
+gcloud storage buckets create "$SOURCE_BUCKET" \
+  --location="$REGION" --uniform-bucket-level-access --project="$PROJECT_ID"
 
-## 3. Construir e publicar a imagem
+gcloud artifacts repositories add-iam-policy-binding "$REPOSITORY" \
+  --location="$REGION" --member="serviceAccount:$BUILD_SA_EMAIL" \
+  --role=roles/artifactregistry.writer --project="$PROJECT_ID"
+gcloud storage buckets add-iam-policy-binding "$SOURCE_BUCKET" \
+  --member="serviceAccount:$BUILD_SA_EMAIL" --role=roles/storage.objectViewer
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:$BUILD_SA_EMAIL" --role=roles/logging.logWriter
+~~~
 
-```bash
-# Monta o endereço da imagem no Artifact Registry.
-# A tag guia-v1 identifica este build; registre o digest para maior rastreabilidade.
-export IMAGE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPOSITORY}/${SERVICE}:guia-v1"
+O operador humano do Cloud Shell precisa enviar o código ao bucket e atuar como as duas contas. Se ainda não tiver esses acessos, um administrador autorizado pode concedê-los apenas nesses recursos. Substitua SEU_EMAIL_GOOGLE pelo e-mail da identidade ativa conferida na etapa 2; este exemplo usa uma identidade de usuário, não uma conta de serviço ou um grupo.
 
-# Envia o diretório atual (.) ao Cloud Build para construir e publicar a imagem.
-gcloud builds submit --tag "$IMAGE" .
-```
+~~~bash
+export OPERATOR_EMAIL="SEU_EMAIL_GOOGLE"
+gcloud storage buckets add-iam-policy-binding "$SOURCE_BUCKET" \
+  --member="user:$OPERATOR_EMAIL" --role=roles/storage.objectCreator
+for ACT_AS_EMAIL in "$BUILD_SA_EMAIL" "$RUNTIME_SA_EMAIL"; do
+  gcloud iam service-accounts add-iam-policy-binding "$ACT_AS_EMAIL" \
+    --member="user:$OPERATOR_EMAIL" --role=roles/iam.serviceAccountUser \
+    --project="$PROJECT_ID"
+done
+~~~
 
-Para facilitar a manutenção, registre o digest da imagem e a versão exata do código oficial.
+**Checkpoint:** as duas contas, o repositório de imagens e o bucket existem. Se um recurso já existir, confira projeto e região antes de reaproveitá-lo. Não trate Permission denied como Already exists. Quem executa build/deploy precisa poder atuar como as contas correspondentes (iam.serviceAccounts.actAs); peça os acessos delimitados nos pré-requisitos ao administrador, sem conceder Owner indiscriminadamente.
 
-## 4. Criar identidade de execução
+## 5. Preservar a autorização fora do contêiner
 
-```bash
-# Cria a identidade com a qual o Cloud Run executará o serviço.
-gcloud iam service-accounts create "$RUNTIME_SA" \
-  --display-name="Execução do Google Ads MCP"
+Em um **projeto dedicado sem banco anterior**, crie Firestore Standard em Native mode. Reveja a localização antes da criação. Se já existir um banco (default), confirme tipo e localização; não substitua nem altere um banco de produção para seguir o exemplo.
 
-# Guarda o e-mail da conta de serviço para usá-lo na implantação.
-export RUNTIME_SA_EMAIL="${RUNTIME_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
-```
+~~~bash
+gcloud firestore databases create --database="$FIRESTORE_DATABASE" \
+  --location="$REGION" --type=firestore-native --edition=standard \
+  --project="$PROJECT_ID"
+gcloud projects add-iam-policy-binding "$PROJECT_ID" \
+  --member="serviceAccount:$RUNTIME_SA_EMAIL" --role=roles/datastore.user
+gcloud firestore databases describe --database="$FIRESTORE_DATABASE" \
+  --project="$PROJECT_ID"
+~~~
 
-A conta poderá precisar de permissões adicionais conforme o armazenamento do estado OAuth e a versão utilizada. Conceda apenas as necessárias.
+**Checkpoint:** o banco está disponível em Native mode. O papel datastore.user concede acesso a dados do projeto; por isso o laboratório é isolado. O Firestore guarda estado OAuth, não um banco de indicadores nem todas as sessões HTTP. O backend upstream filtra registros expirados na leitura, mas não os remove automaticamente; planeje [limpeza e retenção](../guides/OPERATIONS.md).
 
-## 5. Configurar OAuth e segredos
+## 6. Preparar OAuth e três versões de segredos
 
-Antes do deploy, siga [03 · OAuth e Secret Manager](../guides/OAUTH-AND-SECRETS.md). O servidor HTTP necessita de Client ID, Client Secret e configuração de URL pública. Use o Secret Manager para valores secretos.
+Siga [03 · OAuth e Secret Manager, até o checkpoint anterior ao deploy](../guides/OAUTH-AND-SECRETS.md). Volte com OAUTH_CLIENT_ID definido e três segredos existentes, cada um com a versão **1** habilitada e acesso concedido à conta de execução. Não continue com recipientes vazios.
 
-## 6. Implantação inicial
+## 7. Preparar e construir o servidor oficial
 
-O exemplo usa acesso HTTP público **à entrada do servidor OAuth**; isso não libera dados do Google Ads sem autenticação.
+~~~bash
+mkdir -p "$GUIDE_DIR/.work"
+git clone https://github.com/googleads/google-ads-mcp.git "$UPSTREAM_DIR"
+git -C "$UPSTREAM_DIR" checkout --detach "$UPSTREAM_COMMIT"
+python3 "$GUIDE_DIR/scripts/prepare_source.py" "$UPSTREAM_DIR"
+git -C "$UPSTREAM_DIR" rev-parse HEAD
+git -C "$UPSTREAM_DIR" diff -- Dockerfile
+cat "$UPSTREAM_DIR/tools_config.yaml"
+~~~
 
-```bash
-# O identificador OAuth não é uma senha; o segredo será lido do Secret Manager.
-export OAUTH_CLIENT_ID="SEU_CLIENT_ID_PUBLICO"
+O helper faz apenas alterações locais: confere o commit, habilita a dependência opcional Firestore no Dockerfile e copia a configuração que expõe apenas customers, search e metadata. Labels e assets ficam desabilitadas. Preserva o restante do Dockerfile, incluindo os ajustes de compatibilidade FastMCP do upstream. Leia esses ajustes antes de adotar outra versão.
 
-# Publica o contêiner no Cloud Run, limitado a uma instância no exemplo.
-# --allow-unauthenticated permite alcançar o fluxo HTTP/OAuth.
-# As ferramentas do Google Ads continuam dependendo de autenticação válida.
-# --set-secrets injeta referências aos segredos sem expor seus valores.
+**Checkpoint:** SHA correto; instalação com o extra .[firestore]; labels e assets estão false. Essa restrição vale para ferramentas desta imagem. Não reduz o escopo OAuth adwords, as permissões da identidade Google nem outros acessos à API.
+
+~~~bash
+gcloud builds submit "$UPSTREAM_DIR" \
+  --config="$GUIDE_DIR/config/cloudbuild.yaml" \
+  --substitutions="_IMAGE=$IMAGE" \
+  --service-account="projects/$PROJECT_ID/serviceAccounts/$BUILD_SA_EMAIL" \
+  --gcs-source-staging-dir="$SOURCE_BUCKET/source" \
+  --project="$PROJECT_ID"
+~~~
+
+**Checkpoint:** o build informa SUCCESS e a imagem aparece no Artifact Registry. Registre seu digest exibido no build. O contexto enviado é o checkout oficial preparado; não coloque credenciais nessa pasta. Downloads, quotas ou dependências podem impedir o build mesmo com o commit fixado. Não remova verificações do Dockerfile para forçar um sucesso.
+
+## 8. Implantar e descobrir a URL
+
+Este é um piloto com uma instância no máximo e escala a zero. Mantém o HTTP stateful upstream e a concorrência padrão do Cloud Run. Não configure concorrência 1 com streams SSE longos: uma conexão pode ocupar a única vaga. Não é uma arquitetura de alta disponibilidade. O timeout de 300 segundos encerra solicitações HTTP longas após cinco minutos; clientes que mantêm streams precisam conseguir reconectar.
+
+~~~bash
 gcloud run deploy "$SERVICE" \
-  --image="$IMAGE" \
-  --region="$REGION" \
-  --platform=managed \
+  --image="$IMAGE" --region="$REGION" --platform=managed \
   --service-account="$RUNTIME_SA_EMAIL" \
-  --allow-unauthenticated \
-  --min-instances=0 \
-  --max-instances=1 \
-  --set-env-vars="GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_ADS_MCP_OAUTH_CLIENT_ID=${OAUTH_CLIENT_ID}" \
-  --set-secrets="GOOGLE_ADS_MCP_OAUTH_CLIENT_SECRET=google-ads-mcp-oauth-client-secret:latest,GOOGLE_ADS_MCP_JWT_SIGNING_KEY=google-ads-mcp-jwt-signing-key:latest"
-```
+  --allow-unauthenticated --min-instances=0 --max-instances=1 \
+  --cpu=1 --memory=1Gi --timeout=300 \
+  --set-env-vars="GOOGLE_CLOUD_PROJECT=$PROJECT_ID,GOOGLE_ADS_MCP_OAUTH_CLIENT_ID=$OAUTH_CLIENT_ID,GOOGLE_ADS_MCP_STORAGE_TYPE=firestore,GOOGLE_ADS_MCP_STORAGE_FIRESTORE_PROJECT=$PROJECT_ID,GOOGLE_ADS_MCP_STORAGE_FIRESTORE_DATABASE=$FIRESTORE_DATABASE,GOOGLE_ADS_MCP_TOOLS_CONFIG=/app/tools_config.yaml" \
+  --set-secrets="GOOGLE_ADS_MCP_OAUTH_CLIENT_SECRET=google-ads-mcp-oauth-client-secret:1,GOOGLE_ADS_MCP_JWT_SIGNING_KEY=google-ads-mcp-jwt-signing-key:1,GOOGLE_ADS_MCP_STORAGE_ENCRYPTION_KEY=google-ads-mcp-storage-key:1" \
+  --project="$PROJECT_ID"
 
-**Antes de executar:** crie os segredos e conceda à conta de serviço do Cloud Run acesso estritamente aos segredos requeridos. O comando pressupõe esses recursos já configurados.
-
-## 7. Configurar a URL pública
-
-```bash
-# Obtém automaticamente o endereço HTTPS atribuído pelo Cloud Run.
 export SERVICE_URL="$(gcloud run services describe "$SERVICE" \
-  --region="$REGION" --format='value(status.url)')"
-
-# Exibe a URL para conferência; não publica credenciais.
+  --region="$REGION" --project="$PROJECT_ID" --format='value(status.url)')"
 printf '%s\n' "$SERVICE_URL"
 
-# Informa ao servidor sua URL externa para formar os endereços do fluxo OAuth.
-gcloud run services update "$SERVICE" \
-  --region="$REGION" \
-  --update-env-vars="GOOGLE_ADS_MCP_BASE_URL=${SERVICE_URL}"
-```
+gcloud run services update "$SERVICE" --region="$REGION" \
+  --update-env-vars="GOOGLE_ADS_MCP_BASE_URL=$SERVICE_URL" \
+  --project="$PROJECT_ID"
+~~~
 
-Registre as URLs de redirecionamento OAuth exatas exigidas pelo servidor e pelo cliente na configuração do Google Cloud. Confira o callback na versão upstream utilizada antes de autorizar URIs.
+Na primeira revisão, a URL base ainda é a padrão local; não inicie login antes da atualização. **Checkpoint:** a última revisão está pronta e a URL base é a HTTPS gerada, sem /mcp. Termine agora o [cadastro do callback OAuth](../guides/OAUTH-AND-SECRETS.md#depois-do-deploy-cadastrar-o-callback).
 
-## 8. Validar o servidor
+Allow-unauthenticated torna o endpoint alcançável na camada IAM do Cloud Run para o fluxo OAuth. O servidor exige OAuth para ferramentas, mas o endpoint fica exposto à internet e pode receber tráfego que gera custos. Isso não cria uma lista de colaboradores autorizados nem homologa o serviço. Se a política impedir exposição pública, pare e peça à TI uma arquitetura compatível; não contorne a política.
 
-```bash
-# Confere a situação do serviço e sua URL publicada.
-gcloud run services describe "$SERVICE" --region="$REGION"
+## 9. Obter a primeira evidência
 
-# Testa o endpoint sem autenticação e imprime apenas o código HTTP.
-# Uma resposta 401 pode ser normal quando o servidor exige login.
-curl --silent --show-error --output /dev/null \
-  --write-out '%{http_code}\n' "${SERVICE_URL}/mcp"
-```
+Siga [04 · Validação](../guides/VALIDATION.md). Serviço pronto, HTTP 401 anônimo e login concluído são evidências diferentes; acesso à Google Ads API só está validado depois de uma consulta autorizada.
 
-Uma resposta `401` sem login **pode ser esperada**. Conclua o fluxo OAuth com um cliente compatível antes de testar consultas.
+Para manter ou encerrar o laboratório, consulte [operação](../guides/OPERATIONS.md), [custos](../guides/COSTS.md) e [segurança](../../SECURITY.md). Apagar o Cloud Run não apaga imagens, segredos, bucket ou Firestore.
 
-Para uso continuado, configure **persistência de estado OAuth** adequada à sua versão upstream (por exemplo, Firestore/Redis quando suportado). Em Cloud Run, filesystem temporário não é armazenamento durável.
+[← Pré-requisitos](PREREQUISITES.md) · [OAuth e segredos →](../guides/OAUTH-AND-SECRETS.md)
 
-**Próximo:** [04 · Validação](../guides/VALIDATION.md).

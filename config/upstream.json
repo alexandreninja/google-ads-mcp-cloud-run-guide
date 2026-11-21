@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/googleads/google-ads-mcp",
+  "commit": "44ca7770519362c8f334875477e1ceb499f8d2dd",
+  "package_version": "0.0.6",
+  "reviewed_on": "2026-11-21",
+  "release_status": "Audited commit for this guide; not a claim of a tagged stable release."
+}

@@ -1,24 +1,27 @@
 # Custos do ambiente
 
-O faturamento depende de volume, configuração, região e recursos utilizados.
+Não há custo garantido como zero. O valor depende de região, duração e volume das solicitações, configuração do contêiner, quantidade de dados persistidos, tráfego, retenção de logs e preços vigentes. Consulte os preços atuais antes da implantação.
 
-| Serviço | O que acompanhar |
+| Serviço | O que pode gerar custo |
 | --- | --- |
-| Cloud Run | CPU, memória, instâncias e requisições |
-| Cloud Build | Construções executadas |
-| Artifact Registry | Armazenamento de imagens |
-| Secret Manager | Segredos, versões e acessos |
-| Cloud Logging | Volume e retenção de registros |
-| Rede e armazenamento | Tráfego e persistência OAuth |
+| Cloud Run | CPU, memória, solicitações, instâncias mínimas e tempo de execução. Chamadas HTTP longas e transmissões também mantêm uma solicitação ativa. |
+| Cloud Build | Execuções para construir ou atualizar a imagem. |
+| Artifact Registry | Armazenamento das versões de imagem. Remova imagens antigas segundo uma política de retenção compatível com seu rollback. |
+| Firestore | Leituras, gravações, armazenamento, backup e operações de limpeza de estado OAuth. O uso depende da quantidade de usuários e renovações de token. |
+| Secret Manager | Versões armazenadas e acessos aos segredos, incluindo leituras quando instâncias são iniciadas. |
+| Cloud Logging | Ingestão, consultas, exportação e retenção além dos limites aplicáveis. |
+| Rede | Tráfego de saída, especialmente respostas de consultas e integrações externas. |
 
-## Controle inicial
+## Limitar surpresas
 
-1. Escolha uma região e configure um projeto de testes.
-2. Use `min-instances=0` para evitar instâncias mínimas contínuas quando apropriado.
-3. Acompanhe métricas e fatura de **todos os serviços**.
-4. Configure alertas de orçamento e revise quotas.
-5. Avalie o custo de manutenção além da infraestrutura.
+1. Faça a primeira implantação em um projeto de avaliação com faturamento e APIs habilitados apenas conforme necessário.
+2. `min-instances=0` evita manter uma instância mínima aquecida, mas aumenta a latência de início e não elimina cobranças por solicitações, builds, armazenamento, banco ou logs.
+3. A configuração do tutorial limita a uma instância; isso restringe capacidade e não limita os gastos dos demais serviços.
+4. Configure alertas de orçamento e acompanhe a fatura. Alertas de orçamento notificam; não interrompem o serviço nem funcionam como teto automático.
+5. Revise retenção de imagens, dados Firestore, logs e versões de segredos. A exclusão de estado OAuth pode exigir que os usuários entrem novamente.
+6. Defina limites de concorrência compatíveis com clientes que mantenham fluxos HTTP abertos; uma concorrência muito baixa pode formar fila ou rejeitar solicitações.
+7. Avalie os custos de suporte, atualização, revisão de acesso e manutenção, além dos recursos cobrados pelo Google Cloud.
 
-Alertas de orçamento **não são uma trava automática** de gastos.
+O nível de acesso da Google Ads API e suas quotas de operação são controles de acesso e capacidade separados da fatura de infraestrutura do Cloud. O Google encerrou tokens de desenvolvedor em 9 de setembro de 2026; novos projetos precisam verificar o nível de acesso associado ao projeto que contém as credenciais OAuth. Isso não é uma promessa de acesso ilimitado nem de custo zero.
 
-[Cloud Run Pricing](https://cloud.google.com/run/pricing) · [Cloud Billing](https://cloud.google.com/billing/docs).
+Preços e limites podem mudar. Consulte [preços do Cloud Run](https://cloud.google.com/run/pricing), [preços do Firestore](https://cloud.google.com/firestore/pricing), [preços do Cloud Build](https://cloud.google.com/build/pricing), [preços do Artifact Registry](https://cloud.google.com/artifact-registry/pricing), [preços do Secret Manager](https://cloud.google.com/secret-manager/pricing), [Cloud Billing](https://cloud.google.com/billing/docs) e a [política de acesso da Google Ads API](https://developers.google.com/google-ads/api/docs/api-policy/developer-token).
