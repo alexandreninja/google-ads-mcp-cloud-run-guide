@@ -33,7 +33,10 @@ The table lists operations used by the guide. Request permissions scoped to the 
 | Create/update and inspect Cloud Run; configure ingress | run.services.create, run.services.update, run.services.get, run.operations.get, and run.services.setIamPolicy | Lab project/service |
 | Create the repository, bucket, secrets, and database | artifactregistry.repositories.create, storage.buckets.create, secretmanager.secrets.create, secretmanager.versions.add, and datastore.databases.create | Project and new resources |
 | List secret versions for the checkpoint | secretmanager.versions.list | Each of the three secrets |
-| Grant the access used by the guide | The resource's setIamPolicy permission; resourcemanager.projects.setIamPolicy for project-level bindings | Lab resources/project only |
+| Grant the access used by the guide | The resource's getIamPolicy and setIamPolicy permissions; resourcemanager.projects.getIamPolicy and resourcemanager.projects.setIamPolicy at project level | Lab resources/project only |
+| Apply bucket IAM bindings with gcloud | storage.buckets.get, storage.buckets.getIamPolicy, storage.buckets.setIamPolicy, and storage.buckets.update | Staging bucket |
+
+Cloud Storage command-specific permissions are listed in the [official gcloud storage table](https://docs.cloud.google.com/storage/docs/access-control/iam-gcloud).
 
 Deployment step 4 provides the operator's build, staging-bucket, image-read, and actAs bindings. Other resource-creation permissions must already be available to whoever runs those steps. The build identity receives source-read, image-write, and log-write access; the runtime identity receives access to the three secrets and Firestore.
 

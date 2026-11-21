@@ -33,7 +33,10 @@ A tabela lista as operações usadas pelo roteiro. Peça permissões delimitadas
 | Criar/atualizar e consultar o Cloud Run; configurar sua entrada | run.services.create, run.services.update, run.services.get, run.operations.get e run.services.setIamPolicy | Projeto/serviço do laboratório |
 | Criar repositório, bucket, segredos e banco | artifactregistry.repositories.create, storage.buckets.create, secretmanager.secrets.create, secretmanager.versions.add e datastore.databases.create | Projeto e recursos criados |
 | Listar versões de segredos no checkpoint | secretmanager.versions.list | Cada um dos três segredos |
-| Conceder os acessos do roteiro | setIamPolicy do recurso correspondente; resourcemanager.projects.setIamPolicy para os vínculos no projeto | Apenas recursos/projeto do laboratório |
+| Conceder os acessos do roteiro | getIamPolicy e setIamPolicy do recurso correspondente; resourcemanager.projects.getIamPolicy e resourcemanager.projects.setIamPolicy no projeto | Apenas recursos/projeto do laboratório |
+| Aplicar vínculos IAM ao bucket com gcloud | storage.buckets.get, storage.buckets.getIamPolicy, storage.buckets.setIamPolicy e storage.buckets.update | Bucket de origem |
+
+As permissões específicas de comandos do Cloud Storage constam na [tabela oficial do gcloud storage](https://docs.cloud.google.com/storage/docs/access-control/iam-gcloud).
 
 A etapa 4 da implantação inclui os vínculos do operador para build, bucket de origem, leitura da imagem e actAs. As demais permissões de criação precisam estar disponíveis para quem executar os respectivos blocos. A identidade de build recebe leitura da origem, escrita da imagem e dos logs; a de execução recebe acesso aos três segredos e ao Firestore.
 
