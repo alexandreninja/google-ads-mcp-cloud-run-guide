@@ -6,9 +6,9 @@
   <img src="docs/assets/github-header.svg" alt="MCP client connected to the Google Ads MCP server on Cloud Run and to the Google Ads API" width="100%">
 </p>
 
-**Build or integrate?** In the article *Construir ou integrar?*, that question grew out of a challenge at Sebrae Rio: modernizing marketing dashboards and exploring how AI could help interpret validated data. After considering managed integration and self-hosting, the experiment used the official [Google Ads MCP](https://github.com/googleads/google-ads-mcp) server on Cloud Run.
+This guide grew out of a challenge at Sebrae Rio: modernizing marketing dashboards and exploring how AI could help interpret validated data. After considering managed integration and self-hosting, the experiment used the official [Google Ads MCP](https://github.com/googleads/google-ads-mcp) server on Cloud Run.
 
-The article covers the decisions, authentication errors, and lessons learned. **This repository turns that experience into a step-by-step guide**, including for people coming from marketing who are beginning to work with cloud services and AI.
+The repository can be used independently. To explain the motivation behind it, I published the LinkedIn article **Construir ou integrar? O que aprendi implementando um Google Ads MCP com Cloud Run e OAuth 2.0**. It covers the decisions, authentication errors, and lessons that led to this guide. That background helps explain the context; **here, the experience becomes a step-by-step path**, including for people coming from marketing who are beginning to work with cloud services and AI.
 
 ## 🧭 Start here
 
@@ -29,7 +29,7 @@ An HTTPS service that lets an AI client query the Google Ads API through MCP. Th
 3. Build the image, deploy to Cloud Run, and connect an MCP client.
 4. Check the available tools and validate a query against an authorized account.
 
-This integration provides **access to data**. In the architecture discussed in the article, calculations and business rules remain in code and SQL; the language model helps interpret the results. Dashboards, pipelines, and integration into corporate workflows are further steps.
+This integration provides **access to data**. In this architecture, calculations and business rules remain in code and SQL; the language model helps interpret the results. Dashboards, pipelines, and integration into corporate workflows are further steps.
 
 > [!IMPORTANT]
 > Before starting, check the [prerequisites](docs/en/getting-started/PREREQUISITES.md): a project with billing enabled, deployment permissions, and access to the API and Google Ads account. Resources may incur charges. In an institutional environment, arrange these permissions with the team responsible.

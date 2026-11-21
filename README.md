@@ -6,9 +6,9 @@
   <img src="docs/assets/github-header.svg" alt="Cliente MCP conectado ao servidor Google Ads MCP no Cloud Run e à Google Ads API" width="100%">
 </p>
 
-**Construir ou integrar?** No artigo, essa pergunta nasceu de um desafio no Sebrae Rio: modernizar os dashboards de marketing e explorar como a IA poderia ajudar a interpretar dados validados. Entre uma integração gerenciada e uma implantação própria, o experimento seguiu pelo servidor oficial [Google Ads MCP](https://github.com/googleads/google-ads-mcp), hospedado no Cloud Run.
+Este guia nasceu de um desafio no Sebrae Rio: modernizar os dashboards de marketing e explorar como a IA poderia ajudar a interpretar dados validados. Entre uma integração gerenciada e uma implantação própria, o experimento seguiu pelo servidor oficial [Google Ads MCP](https://github.com/googleads/google-ads-mcp), hospedado no Cloud Run.
 
-O artigo conta as decisões, os erros de autenticação e os aprendizados. **Este repositório transforma esse percurso em um passo a passo**, pensado também para quem vem do marketing e está começando a trabalhar com nuvem e IA.
+O repositório pode ser usado de forma independente. Para conhecer a motivação por trás dele, publiquei no LinkedIn o artigo **Construir ou integrar? O que aprendi implementando um Google Ads MCP com Cloud Run e OAuth 2.0**. Nele, conto as decisões, os erros de autenticação e os aprendizados que deram origem a este guia. Essa leitura ajuda a compreender o contexto; **aqui, o percurso se transforma em um passo a passo**, pensado também para quem vem do marketing e está começando a trabalhar com nuvem e IA.
 
 ## 🧭 Comece por aqui
 
@@ -29,7 +29,7 @@ Um serviço HTTPS que permite a um cliente de IA consultar a Google Ads API por 
 3. Construir a imagem, publicar no Cloud Run e conectar um cliente MCP.
 4. Conferir as ferramentas disponíveis e validar uma consulta à conta autorizada.
 
-Essa integração cuida do **acesso aos dados**. Na arquitetura discutida no artigo, cálculos e regras de negócio continuam em código e SQL; o modelo de linguagem ajuda na interpretação. Dashboards, pipelines e a integração ao fluxo corporativo são etapas de evolução.
+Essa integração cuida do **acesso aos dados**. Nesta arquitetura, cálculos e regras de negócio continuam em código e SQL; o modelo de linguagem ajuda na interpretação. Dashboards, pipelines e a integração ao fluxo corporativo são etapas de evolução.
 
 > [!IMPORTANT]
 > Antes de começar, confira os [pré-requisitos](docs/getting-started/PREREQUISITES.md): projeto com faturamento, permissões de implantação, acesso à API e à conta Google Ads. Os recursos podem gerar cobrança. Em ambiente institucional, combine essas liberações com a equipe responsável.
