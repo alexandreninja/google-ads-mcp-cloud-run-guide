@@ -16,7 +16,7 @@ O artigo conta as decisões, os erros de autenticação e os aprendizados. **Est
 | --- | --- |
 | Entender a escolha e os componentes | [Arquitetura](docs/ARCHITECTURE.md) · [STDIO ou HTTP?](docs/concepts/MCP-TRANSPORTS.md) |
 | Implementar, uma etapa por vez | [01 · Pré-requisitos](docs/getting-started/PREREQUISITES.md) → [02 · Implantação](docs/getting-started/DEPLOY.md) |
-| Usar uma IA como tutora | [Prompt pronto para ChatGPT ou Codex](docs/guides/AI-TUTOR.md) |
+| Aprender com um assistente de IA | [Prompt para seu assistente de IA](docs/guides/AI-TUTOR.md) |
 | Resolver um erro | [Diagnóstico por sintoma](docs/guides/TROUBLESHOOTING.md) |
 | Manter ou encerrar o laboratório | [Custos](docs/guides/COSTS.md) · [Operação e limpeza](docs/guides/OPERATIONS.md) |
 
@@ -38,7 +38,7 @@ Essa integração cuida do **acesso aos dados**. Na arquitetura discutida no art
 
 Cada checkpoint diz o que conferir antes de avançar. Encontrou uma sigla nova? Consulte o [glossário](docs/GLOSSARY.md). Precisa acompanhar a navegação na tela? Os [vídeos em português](docs/guides/VIDEOS-PT-BR.md) complementam os passos escritos.
 
-Você também pode fornecer este repositório ao ChatGPT ou Codex e pedir acompanhamento com o [prompt de tutor](docs/guides/AI-TUTOR.md). Ele orienta a explicar os comandos e verificar os resultados com você. Use valores ocultados ao compartilhar erros ou configurações; mantenha credenciais fora da conversa.
+Você também pode compartilhar este repositório com o **assistente de IA de sua preferência**, como ChatGPT, Codex, Claude ou Gemini, e pedir acompanhamento com o [prompt de tutoria](docs/guides/AI-TUTOR.md). Ele orienta a explicar os comandos e verificar os resultados com você. Use valores ocultados ao compartilhar erros ou configurações; mantenha credenciais fora da conversa.
 
 <details>
 <summary>Versão de referência e verificações do guia</summary>

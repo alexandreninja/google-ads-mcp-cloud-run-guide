@@ -18,7 +18,7 @@ O guia de implantação leva você até os pontos em que precisa pausar para pre
 - [Arquitetura e componentes](ARCHITECTURE.md)
 - [MCP: STDIO e Streamable HTTP](concepts/MCP-TRANSPORTS.md)
 - [Glossário](GLOSSARY.md)
-- [Tutor de IA: prompt pronto para ChatGPT ou Codex](guides/AI-TUTOR.md)
+- [Tutoria com seu assistente de IA: prompt pronto para copiar](guides/AI-TUTOR.md)
 - [Vídeos complementares em português](guides/VIDEOS-PT-BR.md) — contexto visual, não procedimentos operacionais.
 - [Segurança](../SECURITY.md)
 - [Referências oficiais](REFERENCES.md)

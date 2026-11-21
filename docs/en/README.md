@@ -18,7 +18,7 @@ The deployment guide tells you when to pause to set up OAuth and review the tool
 - [Architecture and components](ARCHITECTURE.md)
 - [MCP: STDIO and Streamable HTTP](concepts/MCP-TRANSPORTS.md)
 - [Glossary](GLOSSARY.md)
-- [AI tutor: prompt for ChatGPT or Codex](guides/AI-TUTOR.md)
+- [Tutoring with your AI assistant: ready-to-use prompt](guides/AI-TUTOR.md)
 - [Supplementary videos in Portuguese](guides/VIDEOS-PT-BR.md) — conceptual context, not operational procedures.
 - [Security](SECURITY.md)
 - [Official references](REFERENCES.md)

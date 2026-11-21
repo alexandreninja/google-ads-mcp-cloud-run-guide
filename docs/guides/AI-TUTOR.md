@@ -1,6 +1,6 @@
-# Tutor de IA para seguir este guia
+# Use seu assistente de IA como tutor
 
-Use o prompt abaixo em uma conversa separada com ChatGPT ou Codex. Para obter ajuda contextual, compartilhe o link e os arquivos do projeto indicados no prompt. Se precisar mostrar um erro, envie a mensagem sem informações confidenciais e com dados sensíveis ocultados. O prompt não precisa de credenciais.
+Use o prompt abaixo em uma conversa separada com o **assistente de inteligência artificial (IA) de sua preferência**, como ChatGPT, Codex, Claude ou Gemini. Para obter ajuda contextual, compartilhe o link e os arquivos do projeto indicados no prompt. Se precisar mostrar um erro, envie a mensagem sem informações confidenciais e com dados sensíveis ocultados. O prompt não precisa de credenciais.
 
 Antes de compartilhar um terminal, captura de tela ou log, remova senhas, tokens, valores de segredos, cookies, arquivos JSON de credenciais e dados de clientes. Substitua valores confidenciais por `[VALOR OCULTADO]`. IDs de projeto e serviço não são senhas, mas confirme se sua organização permite compartilhá-los.
 

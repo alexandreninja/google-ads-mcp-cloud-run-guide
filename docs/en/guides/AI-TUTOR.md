@@ -1,6 +1,6 @@
-# AI tutor for following this guide
+# Use your AI assistant as a tutor
 
-Use the prompt below in a separate conversation with ChatGPT or Codex. Provide the repository link and the files listed in the prompt. If needed, include error messages with sensitive details removed. The prompt does not need credentials.
+Use the prompt below in a separate conversation with **your preferred artificial intelligence (AI) assistant**, such as ChatGPT, Codex, Claude, or Gemini. Provide the repository link and the files listed in the prompt. If needed, include error messages with sensitive details removed. The prompt does not need credentials.
 
 Before sharing a terminal, screenshot, or log, remove passwords, tokens, secret values, cookies, JSON credential files, and customer data. Replace confidential values with `[REDACTED VALUE]`. Project and service IDs are not passwords, but check whether your organization allows you to share them.
 

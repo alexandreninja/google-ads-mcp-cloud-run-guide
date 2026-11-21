@@ -16,7 +16,7 @@ The article covers the decisions, authentication errors, and lessons learned. **
 | --- | --- |
 | Understand the choice and components | [Architecture](docs/en/ARCHITECTURE.md) · [STDIO or HTTP?](docs/en/concepts/MCP-TRANSPORTS.md) |
 | Implement one step at a time | [01 · Prerequisites](docs/en/getting-started/PREREQUISITES.md) → [02 · Deployment](docs/en/getting-started/DEPLOY.md) |
-| Use AI as a tutor | [Ready-to-use prompt for ChatGPT or Codex](docs/en/guides/AI-TUTOR.md) |
+| Learn with an AI assistant | [Tutoring prompt for your AI assistant](docs/en/guides/AI-TUTOR.md) |
 | Resolve an error | [Troubleshooting by symptom](docs/en/guides/TROUBLESHOOTING.md) |
 | Maintain or close the lab | [Costs](docs/en/guides/COSTS.md) · [Operations and cleanup](docs/en/guides/OPERATIONS.md) |
 
@@ -38,7 +38,7 @@ This integration provides **access to data**. In the architecture discussed in t
 
 Each checkpoint tells you what to verify before moving on. New acronym? Look it up in the [glossary](docs/en/GLOSSARY.md). Need to see the interface? The [Portuguese videos](docs/en/guides/VIDEOS-PT-BR.md) supplement the written steps.
 
-You can also give this repository to ChatGPT or Codex and request guidance with the [tutor prompt](docs/en/guides/AI-TUTOR.md). It asks the tutor to explain commands and check results with you. Redact values when sharing errors or configuration, and keep credentials out of the conversation.
+You can also share this repository with **your preferred AI assistant**, such as ChatGPT, Codex, Claude, or Gemini, and request guidance with the [tutoring prompt](docs/en/guides/AI-TUTOR.md). It asks the tutor to explain commands and check results with you. Redact values when sharing errors or configuration, and keep credentials out of the conversation.
 
 <details>
 <summary>Reference version and guide checks</summary>

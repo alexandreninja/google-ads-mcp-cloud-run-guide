@@ -22,7 +22,7 @@ curl --silent --show-error --output /dev/null --write-out '%{http_code}\n' \
 
 ## 2. Choose a client
 
-Use an installed client that supports MCP over HTTP and OAuth. Access to models/assistants may depend on account, plan, and corporate policies. See the [official references](../REFERENCES.md). Using ChatGPT as a tutor to read this guide is different from connecting an MCP client to the server.
+Use an installed client that supports MCP over HTTP and OAuth. Access to models/assistants may depend on account, plan, and corporate policies. See the [official references](../REFERENCES.md). Using an AI assistant as a tutor to read this guide is different from connecting an MCP client to the server.
 
 ### VS Code with agents/Copilot enabled
 
