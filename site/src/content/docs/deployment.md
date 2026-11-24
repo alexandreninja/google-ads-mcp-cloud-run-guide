@@ -10,3 +10,5 @@ O roteiro canônico usa Cloud Shell, fixa um commit do servidor oficial, limita 
 Antes de conectar uma conta de anúncios, confirme que a configuração de ferramentas foi aplicada à imagem da versão fixada. OAuth autentica a pessoa; não altera o escopo de autorização nem substitui as permissões Google Ads.
 
 Referências completas: [OAuth e Secret Manager](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OAUTH-AND-SECRETS.md) · [custos](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/COSTS.md) · [operação](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OPERATIONS.md).
+
+Para uma implantação existente, veja o [roteiro canônico de migração OAuth](https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide/blob/main/docs/guides/OAUTH-PERSISTENCE.md), com evidências e limites do teste entre revisões.

@@ -40,3 +40,7 @@ git diff --check
 The [validation matrix](guides/VALIDATION.md) explains how to record the build, revision, sign-in, tools, and query. Supplementary videos had their metadata checked, without a full content review. The `site/` scaffold remains experimental.
 
 [Português](../REVIEW.md) · [Index](README.md)
+
+## Additional evidence · November 24, 2026
+
+The [migration experiment](guides/OAUTH-PERSISTENCE.md) used a different upstream commit of package 0.0.6. The review above remains a historical record of November 21. Access continuity across revisions was observed; post-expiry renewal and actual cost remain unverified. Automated checks for the documentation update must run before publication.

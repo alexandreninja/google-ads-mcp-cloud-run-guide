@@ -83,3 +83,5 @@ Se a interface exigir origem JavaScript, use a URL base HTTPS, sem caminho. Orig
 
 [← Implantação](../getting-started/DEPLOY.md) · [Validação →](VALIDATION.md)
 
+
+A chave de criptografia do armazenamento é distinta da chave de assinatura JWT. Mantenha sua versão estável entre revisões. Não a imprima para conferir persistência. Veja [persistência OAuth](OAUTH-PERSISTENCE.md).

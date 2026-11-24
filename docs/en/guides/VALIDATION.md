@@ -147,6 +147,20 @@ print(f"{currency_code} {cost}")  # BRL 1.234567
 | Query | Fields, period, rows, currency, and time zone checked |
 | Result | Success, coherent empty result, or diagnosed error; never mark “passed” without running it |
 
-Scale-to-zero, restarts, and new revisions can end MCP sessions/HTTP streams even with OAuth persisted in Firestore. Reconnect the client; do not delete secrets or the database to recover a session. If something fails, use [troubleshooting](TROUBLESHOOTING.md).
+Scale-to-zero, restarts, and new revisions can end MCP sessions/HTTP streams even with OAuth persisted in Firestore. Allow the client to restore transport; do not manually reauthorize during the persistence test. do not delete secrets or the database to recover a session. If something fails, use [troubleshooting](TROUBLESHOOTING.md).
 
 [← OAuth](OAUTH-AND-SECRETS.md) · [Errors and diagnosis →](TROUBLESHOOTING.md)
+
+## OAuth continuity across revisions
+
+Follow the [persistence experiment](OAUTH-PERSISTENCE.md): compare queries before and after a revision change without manual OAuth reconnection. Test renewal after expiry separately.
+
+```mermaid
+flowchart TD
+  A["Authorized query"] --> B["Check Firestore metadata"]
+  B --> C["New revision, same keys"]
+  C --> D["Query without manual login"]
+  D --> E{"Success?"}
+  E -->|Yes| F["Record continuity; test renewal separately"]
+  E -->|No| G["Diagnose storage, IAM and keys"]
+```

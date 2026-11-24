@@ -40,3 +40,7 @@ git diff --check
 A [matriz de validação](guides/VALIDATION.md) orienta a registrar build, revisão, login, ferramentas e consulta. Os vídeos complementares tiveram metadados conferidos, sem revisão integral do conteúdo. O scaffold em `site/` permanece experimental.
 
 [English](en/REVIEW.md) · [Índice](README.md)
+
+## Evidência adicional · 24 de novembro de 2026
+
+O [experimento de migração](guides/OAUTH-PERSISTENCE.md) foi realizado em outro commit upstream do pacote 0.0.6. A revisão acima permanece como registro histórico de 21/11. A continuidade de acesso entre revisões foi observada; renovação após expiração e custo efetivo ainda não foram comprovados. Os testes automatizados da atualização documental devem ser executados antes da publicação.

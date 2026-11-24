@@ -10,6 +10,8 @@ This guide grew out of a challenge at Sebrae Rio: modernizing marketing dashboar
 
 The repository can be used independently. To explain the motivation behind it, I published the LinkedIn article [**Construir ou integrar? O que aprendi implementando um Google Ads MCP com Cloud Run e OAuth 2.0**](https://www.linkedin.com/pulse/construir-ou-integrar-o-que-aprendi-implementando-um-alexandre-ssyie). It covers the decisions, authentication errors, and lessons that led to this guide. That background helps explain the context; **here, the experience becomes a step-by-step path**, including for people coming from marketing who are beginning to work with cloud services and AI.
 
+**Guide v1.1.0 (proposed):** start with the normal deployment path, which includes Firestore from the beginning. Already using in-memory OAuth? Follow the [migration guide](docs/en/guides/OAUTH-PERSISTENCE.md).
+
 ## 🧭 Start here
 
 | I want to… | Where to go |
@@ -26,7 +28,7 @@ An HTTPS service that lets an AI client query the Google Ads API through MCP. Th
 
 1. Prepare the project, access, and separate build and runtime identities.
 2. Set up Google sign-in with OAuth and store credentials in Secret Manager.
-3. Build the image, deploy to Cloud Run, and connect an MCP client.
+3. Configure persistent OAuth storage in Firestore, build the image, deploy to Cloud Run, and connect an MCP client.
 4. Check the available tools and validate a query against an authorized account.
 
 This integration provides **access to data**. In this architecture, calculations and business rules remain in code and SQL; the language model helps interpret the results. Dashboards, pipelines, and integration into corporate workflows are further steps.
@@ -52,3 +54,7 @@ The guide pins commit `44ca7770519362c8f334875477e1ceb499f8d2dd` of the official
 [Full index](docs/en/README.md) · [Security](docs/en/SECURITY.md) · [Official sources](docs/en/REFERENCES.md) · [Contributing](CONTRIBUTING.md)
 
 The guide and its original files use the [MIT license](LICENSE): you may use, study, adapt, and redistribute them, including commercially, while retaining the license notice. The server is maintained by Google's official project and has its own license, described in the [third-party notices](THIRD_PARTY_NOTICES.md).
+
+## OAuth persistence — v1.1.0 under review
+
+Already running an MCP? Follow the [persistence migration and validation guide](docs/en/guides/OAUTH-PERSISTENCE.md). See the [changelog](CHANGELOG.md). Cross-revision continuity was tested on a deployment distinct from the guide's pinned commit; renewal after expiry remains unverified.

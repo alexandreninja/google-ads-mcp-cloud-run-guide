@@ -35,4 +35,10 @@ Use this glossary as a map between Google Cloud and Google Ads terms. An analogy
 | **Acceptance testing** | The formal rehearsal before real use. | Validation using the environment, tools, access, logs, and controls approved by the organization. Reproducing this tutorial is not the same as acceptance testing and does not certify production readiness. |
 | **TCO** | The total cost over time. | Total Cost of Ownership: infrastructure, maintenance, monitoring, security, support, and team time, in addition to each service charge. |
 
+### Persistence in practice
+
+- **Fernet:** authenticated application-level encryption of stored OAuth content.
+- **Revision:** immutable Cloud Run deployment configuration; a new process does not inherit old process memory.
+- **Persistence:** storing state outside the process. It does not guarantee an unexpired authorization.
+
 **Next:** [Documentation index](README.md) · [Architecture](ARCHITECTURE.md) · [AI tutor](guides/AI-TUTOR.md)

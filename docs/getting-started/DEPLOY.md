@@ -124,6 +124,16 @@ O papel `roles/storage.legacyBucketReader` inclui `storage.buckets.get`, necess�
 
 ## 5. Preservar a autorização fora do contêiner
 
+O contêiner é uma bancada substituível: sua memória desaparece quando o processo termina. O Firestore guarda o estado OAuth fora do processo; o Secret Manager fornece a chave de criptografia. Nenhum deles mantém um stream HTTP aberto.
+
+```mermaid
+flowchart LR
+  A[Cloud Run] <-->|Estado OAuth criptografado| B[(Firestore)]
+  C[Secret Manager] -->|Chave de criptografia| A
+  A <-->|API| D[Google Ads API]
+```
+
+
 Em um **projeto dedicado sem banco anterior**, crie Firestore Standard em Native mode. Reveja a localização antes da criação. Se já existir um banco (default), confirme tipo e localização; não substitua nem altere um banco de produção para seguir o exemplo.
 
 ~~~bash
@@ -131,12 +141,13 @@ gcloud firestore databases create --database="$FIRESTORE_DATABASE" \
   --location="$REGION" --type=firestore-native --edition=standard \
   --project="$PROJECT_ID"
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
-  --member="serviceAccount:$RUNTIME_SA_EMAIL" --role=roles/datastore.user
+  --member="serviceAccount:$RUNTIME_SA_EMAIL" --role=roles/datastore.user \
+  --condition="expression=resource.name==\"projects/$PROJECT_ID/databases/$FIRESTORE_DATABASE\",title=McpFirestoreAccess,description=OAuth persistent storage"
 gcloud firestore databases describe --database="$FIRESTORE_DATABASE" \
   --project="$PROJECT_ID"
 ~~~
 
-**Checkpoint:** o banco está disponível em Native mode. O papel datastore.user concede acesso a dados do projeto; por isso o laboratório é isolado. O Firestore guarda estado OAuth, não um banco de indicadores nem todas as sessões HTTP. O backend upstream filtra registros expirados na leitura, mas não os remove automaticamente; planeje [limpeza e retenção](../guides/OPERATIONS.md).
+**Checkpoint:** o banco está disponível em Native mode. A condição limita esta concessão ao banco indicado, não a coleções individuais. Mantenha o laboratório isolado e confira acesso efetivo durante OAuth. O Firestore guarda estado OAuth, não um banco de indicadores nem todas as sessões HTTP. O backend upstream filtra registros expirados na leitura, mas não os remove automaticamente; planeje [limpeza e retenção](../guides/OPERATIONS.md).
 
 ## 6. Preparar OAuth e três versões de segredos
 
@@ -210,3 +221,4 @@ Para manter ou encerrar o laboratório, consulte [operação](../guides/OPERATIO
 
 [← Pré-requisitos](PREREQUISITES.md) · [OAuth e segredos →](../guides/OAUTH-AND-SECRETS.md)
 
+Já possui uma implantação em memória? Utilize o [roteiro de migração](../guides/OAUTH-PERSISTENCE.md), em vez de recriar o serviço.

@@ -16,7 +16,7 @@ Meu ponto de partida:
 - Ambiente: [CLOUD SHELL / OUTRO]
 
 Repositório do tutorial: https://github.com/alexandreninja/google-ads-mcp-cloud-run-guide
-Arquivos essenciais quando você tiver acesso: README.md, docs/README.md, docs/getting-started/PREREQUISITES.md, docs/getting-started/DEPLOY.md, docs/guides/OAUTH-AND-SECRETS.md, docs/guides/VALIDATION.md, docs/GLOSSARY.md, config/upstream.json e config/tools-readonly.yaml. O repositório pode exigir acesso. Se não conseguir abrir o link ou os arquivos, peça que eu envie os documentos relevantes; não finja que os leu nem invente o conteúdo.
+Arquivos essenciais quando você tiver acesso: README.md, docs/README.md, docs/getting-started/PREREQUISITES.md, docs/getting-started/DEPLOY.md, docs/guides/OAUTH-AND-SECRETS.md, docs/guides/VALIDATION.md, docs/guides/OAUTH-PERSISTENCE.md, docs/GLOSSARY.md, config/upstream.json e config/tools-readonly.yaml. O repositório pode exigir acesso. Se não conseguir abrir o link ou os arquivos, peça que eu envie os documentos relevantes; não finja que os leu nem invente o conteúdo.
 
 Atue como tutor paciente e tecnicamente rigoroso. Use português claro, analogias curtas e explique cada sigla na primeira vez. Ensine uma etapa por vez e espere eu confirmar o checkpoint antes de avançar.
 
@@ -30,7 +30,8 @@ Regras de trabalho:
 7. Não confunda OAuth do usuário com IAM do Cloud Run, nível de acesso à Google Ads API ou permissão dessa pessoa nas contas de anúncios. Se o servidor estiver ligado a uma MCC, explique quando `login_customer_id` se aplica; não suponha que a listagem de clientes inclua automaticamente todas as contas filhas.
 8. Antes de conectar uma conta, ajude-me a conferir o arquivo de configuração de ferramentas do commit fixado. Trabalhe apenas com a lista permitida por esse arquivo. Não habilite ferramentas de escrita, não crie ativos nem altere rótulos no Google Ads; não faça chamadas que modifiquem contas.
 9. Diferencie demonstração, teste e homologação. Um HTTP 401 anônimo pode ser esperado, mas não comprova sozinho o sucesso de OAuth nem de uma consulta autenticada. Não diga que houve teste na nuvem se nenhum teste foi executado.
-10. Se faltar informação, faça uma pergunta curta e continue apenas a parte que não dependa dela. Se encontrar contradição entre este tutorial e a versão fixada, mostre o trecho e proponha uma forma de verificar antes de sugerir mudança. Se não tiver acesso a uma fonte ou arquivo, diga isso claramente.
+10. Para persistência OAuth, diferencie instalação nova de migração. Explique Firestore, IAM condicionado ao banco, chave dedicada, preparo da imagem e teste entre revisões. Confira cada checkpoint; não solicite segredos nem afirme que continuidade comprova renovação dos tokens.
+11. Se faltar informação, faça uma pergunta curta e continue apenas a parte que não dependa dela. Se encontrar contradição entre este tutorial e a versão fixada, mostre o trecho e proponha uma forma de verificar antes de sugerir mudança. Se não tiver acesso a uma fonte ou arquivo, diga isso claramente.
 
 Não repita nem tente recuperar valores confidenciais. Use [VALOR OCULTADO] nos exemplos. Agora, ajude-me apenas na etapa que indiquei e pare no próximo checkpoint.
 ```

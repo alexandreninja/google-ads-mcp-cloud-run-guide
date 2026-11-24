@@ -25,6 +25,6 @@
 <rect x="1150" y="550" width="340" height="100" rx="16" fill="#21304c" stroke="#b59bff"/><text x="1320" y="612">Google Ads API</text>
 </g>
 <g fill="none" stroke="#5af3d6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M470 600 H610 M485 588 L469 600 L485 612 M595 588 L611 600 L595 612"/><path d="M990 600 H1130 M1005 588 L989 600 L1005 612 M1115 588 L1131 600 L1115 612"/></g>
-<text x="130" y="690" font-size="22" fill="#a9bfda" font-family="Inter,Arial,sans-serif">Controles de apoio: OAuth 2.0 · Secret Manager · IAM · logs · governança de dados</text>
-<text x="90" y="796" font-family="Inter,Arial,sans-serif" font-size="24" fill="#8fb2ce">Cloud Build não é acionado durante a consulta; respostas retornam ao cliente autorizado.</text>
+<text x="130" y="690" font-size="22" fill="#a9bfda" font-family="Inter,Arial,sans-serif">Controles de apoio: OAuth 2.0 · Firestore (estado OAuth) · Secret Manager · IAM · logs</text>
+<text x="90" y="796" font-family="Inter,Arial,sans-serif" font-size="24" fill="#8fb2ce">Cloud Build não é acionado durante a consulta; Firestore preserva estado OAuth fora do contêiner.</text>
 </svg>
