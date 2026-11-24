@@ -135,3 +135,7 @@ Não remova proteções de autenticação para fazer o erro desaparecer. Identif
 Compartilhe a etapa, o horário aproximado, região, revisão, versão/commit upstream e a mensagem de erro sem segredos. Remova Client Secret, tokens OAuth, chaves de assinatura, cookies, dados pessoais e identificadores de conta que não sejam necessários. Para falhas do servidor-base, consulte as [issues do projeto oficial](https://github.com/googleads/google-ads-mcp/issues).
 
 [← Validação](VALIDATION.md) · [Custos e operação →](OPERATIONS.md) · [Vídeos em português](VIDEOS-PT-BR.md)
+
+## Reconexão OAuth frequente
+
+Confira backend, dependência Firestore, IAM, estabilidade da chave de criptografia e status de publicação OAuth. Não confunda encerramento do transporte HTTP com perda de autorização. Veja [migração e diagnóstico de persistência](OAUTH-PERSISTENCE.md).

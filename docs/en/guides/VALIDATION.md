@@ -150,3 +150,7 @@ print(f"{currency_code} {cost}")  # BRL 1.234567
 Scale-to-zero, restarts, and new revisions can end MCP sessions/HTTP streams even with OAuth persisted in Firestore. Reconnect the client; do not delete secrets or the database to recover a session. If something fails, use [troubleshooting](TROUBLESHOOTING.md).
 
 [← OAuth](OAUTH-AND-SECRETS.md) · [Errors and diagnosis →](TROUBLESHOOTING.md)
+
+## OAuth continuity across revisions
+
+Follow the [persistence experiment](OAUTH-PERSISTENCE.md): compare queries before and after a revision change without manual OAuth reconnection. Test renewal after expiry separately.

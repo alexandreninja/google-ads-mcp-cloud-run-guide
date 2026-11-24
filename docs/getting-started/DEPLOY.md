@@ -210,3 +210,4 @@ Para manter ou encerrar o laboratório, consulte [operação](../guides/OPERATIO
 
 [← Pré-requisitos](PREREQUISITES.md) · [OAuth e segredos →](../guides/OAUTH-AND-SECRETS.md)
 
+Já possui uma implantação em memória? Utilize o [roteiro de migração](../guides/OAUTH-PERSISTENCE.md), em vez de recriar o serviço.

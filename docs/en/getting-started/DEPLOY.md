@@ -208,3 +208,5 @@ Follow [04 · Validation](../guides/VALIDATION.md). A ready service, an anonymou
 For maintenance or to close the lab, see [operations](../guides/OPERATIONS.md), [costs](../guides/COSTS.md), and [security](../SECURITY.md). Deleting Cloud Run does not delete images, secrets, the bucket, or Firestore.
 
 [← Prerequisites](PREREQUISITES.md) · [OAuth and secrets →](../guides/OAUTH-AND-SECRETS.md)
+
+Already have a memory-backed deployment? Use the [migration procedure](../guides/OAUTH-PERSISTENCE.md) instead of recreating the service.

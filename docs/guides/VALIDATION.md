@@ -151,3 +151,6 @@ Escala a zero, reinícios e novas revisões podem encerrar sessões MCP/streams 
 
 [← OAuth](OAUTH-AND-SECRETS.md) · [Erros e diagnóstico →](TROUBLESHOOTING.md)
 
+## Continuidade OAuth entre revisões
+
+Siga o [experimento de persistência](OAUTH-PERSISTENCE.md): compare consultas antes e depois da mudança de revisão sem reconexão OAuth manual. Teste renovação após expiração separadamente.

@@ -52,3 +52,7 @@ The guide pins commit `44ca7770519362c8f334875477e1ceb499f8d2dd` of the official
 [Full index](docs/en/README.md) · [Security](docs/en/SECURITY.md) · [Official sources](docs/en/REFERENCES.md) · [Contributing](CONTRIBUTING.md)
 
 The guide and its original files use the [MIT license](LICENSE): you may use, study, adapt, and redistribute them, including commercially, while retaining the license notice. The server is maintained by Google's official project and has its own license, described in the [third-party notices](THIRD_PARTY_NOTICES.md).
+
+## OAuth persistence — v1.1.0 under review
+
+Already running an MCP? Follow the [persistence migration and validation guide](docs/en/guides/OAUTH-PERSISTENCE.md). See the [changelog](CHANGELOG.md). Cross-revision continuity was tested on a deployment distinct from the guide's pinned commit; renewal after expiry remains unverified.

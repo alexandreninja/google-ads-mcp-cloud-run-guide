@@ -27,3 +27,7 @@ The Google Ads API's access level and operation quotas control access and capaci
 Prices and allowances can change. See [Cloud Run pricing](https://cloud.google.com/run/pricing), [Firestore pricing](https://cloud.google.com/firestore/pricing), [Cloud Build pricing](https://cloud.google.com/build/pricing), [Artifact Registry pricing](https://cloud.google.com/artifact-registry/pricing), [Secret Manager pricing](https://cloud.google.com/secret-manager/pricing), [Cloud Billing](https://cloud.google.com/billing/docs), and the [Google Ads API access policy](https://developers.google.com/google-ads/api/docs/api-policy/developer-token).
 
 [Operations and cleanup](OPERATIONS.md)
+
+## Persistence and free usage
+
+Check freeTier on the chosen database and monitor all allowances, including Secret Manager and additional images. Eligibility is not measured zero cost. The [OAuth persistence](OAUTH-PERSISTENCE.md) experiment does not yet have a long-term billing assessment.

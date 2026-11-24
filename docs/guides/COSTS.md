@@ -25,3 +25,7 @@ Não há custo garantido como zero. O valor depende de região, duração e volu
 O nível de acesso da Google Ads API e suas quotas de operação são controles de acesso e capacidade separados da fatura de infraestrutura do Cloud. O Google encerrou tokens de desenvolvedor em 9 de setembro de 2026; novos projetos precisam verificar o nível de acesso associado ao projeto que contém as credenciais OAuth. Isso não é uma promessa de acesso ilimitado nem de custo zero.
 
 Preços e limites podem mudar. Consulte [preços do Cloud Run](https://cloud.google.com/run/pricing), [preços do Firestore](https://cloud.google.com/firestore/pricing), [preços do Cloud Build](https://cloud.google.com/build/pricing), [preços do Artifact Registry](https://cloud.google.com/artifact-registry/pricing), [preços do Secret Manager](https://cloud.google.com/secret-manager/pricing), [Cloud Billing](https://cloud.google.com/billing/docs) e a [política de acesso da Google Ads API](https://developers.google.com/google-ads/api/docs/api-policy/developer-token).
+
+## Persistência e franquia gratuita
+
+Confira freeTier no banco escolhido e acompanhe consumo de todas as franquias, inclusive Secret Manager e imagens adicionais. Elegibilidade não equivale a custo zero medido. O experimento descrito em [persistência OAuth](OAUTH-PERSISTENCE.md) ainda não possui avaliação de faturamento de longo prazo.

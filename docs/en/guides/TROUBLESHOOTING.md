@@ -148,3 +148,7 @@ Do not remove authentication protections to hide an error. Identify the layer th
 Share the step, approximate time, region, revision, upstream version/commit, and error with secrets removed. Hide Client Secrets, OAuth tokens, signing/storage keys, cookies, personal data, and unnecessary account IDs. For upstream server failures, use the [official project's issues](https://github.com/googleads/google-ads-mcp/issues).
 
 [← Validation](VALIDATION.md) · [Costs and operations →](OPERATIONS.md) · [Videos in Portuguese](VIDEOS-PT-BR.md)
+
+## Frequent OAuth reconnection
+
+Check backend, Firestore dependency, IAM, encryption key stability, and OAuth publishing status. Distinguish HTTP transport closure from authorization loss. See [persistence migration and diagnosis](OAUTH-PERSISTENCE.md).

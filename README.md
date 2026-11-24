@@ -52,3 +52,7 @@ O roteiro fixa o commit `44ca7770519362c8f334875477e1ceb499f8d2dd` do servidor o
 [Índice completo](docs/README.md) · [Segurança](SECURITY.md) · [Fontes oficiais](docs/REFERENCES.md) · [Como contribuir](CONTRIBUTING.md)
 
 O guia e seus arquivos originais estão sob [licença MIT](LICENSE): você pode usar, estudar, adaptar e redistribuir, inclusive comercialmente, preservando o aviso de licença. O servidor é mantido pelo projeto oficial do Google e segue sua própria licença, descrita nos [avisos de terceiros](THIRD_PARTY_NOTICES.md).
+
+## Persistência OAuth — v1.1.0 em revisão
+
+Já tem um MCP implantado? Siga o [guia de migração e validação de persistência](docs/guides/OAUTH-PERSISTENCE.md). Veja o [histórico de versões](CHANGELOG.md). A continuidade entre revisões foi testada em uma implantação distinta do commit fixado no guia; renovação após expiração ainda não homologada.
