@@ -10,6 +10,8 @@ Este guia nasceu de um desafio no Sebrae Rio: modernizar os dashboards de market
 
 O repositório pode ser usado de forma independente. Para conhecer a motivação por trás dele, publiquei no LinkedIn o artigo [**Construir ou integrar? O que aprendi implementando um Google Ads MCP com Cloud Run e OAuth 2.0**](https://www.linkedin.com/pulse/construir-ou-integrar-o-que-aprendi-implementando-um-alexandre-ssyie). Nele, conto as decisões, os erros de autenticação e os aprendizados que deram origem a este guia. Essa leitura ajuda a compreender o contexto; **aqui, o percurso se transforma em um passo a passo**, pensado também para quem vem do marketing e está começando a trabalhar com nuvem e IA.
 
+**Guia v1.1.0 (proposta):** comece pelo roteiro normal de implantação, que inclui Firestore desde o início. Já usa OAuth em memória? Siga o [guia de migração](docs/guides/OAUTH-PERSISTENCE.md).
+
 ## 🧭 Comece por aqui
 
 | Quero… | Por onde seguir |
@@ -26,7 +28,7 @@ Um serviço HTTPS que permite a um cliente de IA consultar a Google Ads API por 
 
 1. Preparar o projeto, os acessos e as identidades de build e execução.
 2. Configurar o login Google com OAuth e guardar as credenciais no Secret Manager.
-3. Construir a imagem, publicar no Cloud Run e conectar um cliente MCP.
+3. Configurar armazenamento OAuth persistente no Firestore, construir a imagem, publicar no Cloud Run e conectar um cliente MCP.
 4. Conferir as ferramentas disponíveis e validar uma consulta à conta autorizada.
 
 Essa integração cuida do **acesso aos dados**. Nesta arquitetura, cálculos e regras de negócio continuam em código e SQL; o modelo de linguagem ajuda na interpretação. Dashboards, pipelines e a integração ao fluxo corporativo são etapas de evolução.
@@ -52,3 +54,7 @@ O roteiro fixa o commit `44ca7770519362c8f334875477e1ceb499f8d2dd` do servidor o
 [Índice completo](docs/README.md) · [Segurança](SECURITY.md) · [Fontes oficiais](docs/REFERENCES.md) · [Como contribuir](CONTRIBUTING.md)
 
 O guia e seus arquivos originais estão sob [licença MIT](LICENSE): você pode usar, estudar, adaptar e redistribuir, inclusive comercialmente, preservando o aviso de licença. O servidor é mantido pelo projeto oficial do Google e segue sua própria licença, descrita nos [avisos de terceiros](THIRD_PARTY_NOTICES.md).
+
+## Persistência OAuth — v1.1.0 em revisão
+
+Já tem um MCP implantado? Siga o [guia de migração e validação de persistência](docs/guides/OAUTH-PERSISTENCE.md). Veja o [histórico de versões](CHANGELOG.md). A continuidade entre revisões foi testada em uma implantação distinta do commit fixado no guia; renovação após expiração ainda não homologada.

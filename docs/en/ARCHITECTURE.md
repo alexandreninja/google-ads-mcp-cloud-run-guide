@@ -59,3 +59,7 @@ With `min-instances=0`, Cloud Run may stop idle instances. This saves the cost o
 - [Google Ads API: OAuth and access model](https://developers.google.com/google-ads/api/docs/oauth/access-model) and [developer-token retirement](https://developers.google.com/google-ads/api/docs/api-policy/developer-token).
 
 Next: [Deployment](getting-started/DEPLOY.md).
+
+## OAuth state and process lifecycle
+
+Firestore externalizes authorization state, not the MCP HTTP session. See the [memory-to-Firestore migration](guides/OAUTH-PERSISTENCE.md) to reproduce cross-revision validation.

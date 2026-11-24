@@ -147,7 +147,20 @@ print(f"{currency_code} {cost}")  # BRL 1.234567
 | Consulta | Campos, período, linhas, moeda e fuso conferidos |
 | Resultado | Sucesso, vazio coerente ou erro diagnosticado; nunca “passou” sem executar |
 
-Escala a zero, reinícios e novas revisões podem encerrar sessões MCP/streams HTTP mesmo com OAuth persistente no Firestore. Reconecte o cliente; não apague segredos ou banco para recuperar uma sessão. Se falhar, use [solução de problemas](TROUBLESHOOTING.md).
+Escala a zero, reinícios e novas revisões podem encerrar sessões MCP/streams HTTP mesmo com OAuth persistente no Firestore. Permita que o cliente restabeleça o transporte; não refaça a autorização manual durante o teste de persistência. não apague segredos ou banco para recuperar uma sessão. Se falhar, use [solução de problemas](TROUBLESHOOTING.md).
 
 [← OAuth](OAUTH-AND-SECRETS.md) · [Erros e diagnóstico →](TROUBLESHOOTING.md)
 
+## Continuidade OAuth entre revisões
+
+Siga o [experimento de persistência](OAUTH-PERSISTENCE.md): compare consultas antes e depois da mudança de revisão sem reconexão OAuth manual. Teste renovação após expiração separadamente.
+
+```mermaid
+flowchart TD
+  A["Consulta autorizada"] --> B["Conferir metadados Firestore"]
+  B --> C["Nova revisão, mesmas chaves"]
+  C --> D["Consulta sem novo login manual"]
+  D --> E{"Funcionou?"}
+  E -->|Sim| F["Registrar continuidade; testar renovação separadamente"]
+  E -->|Não| G["Diagnosticar storage, IAM e chaves"]
+```

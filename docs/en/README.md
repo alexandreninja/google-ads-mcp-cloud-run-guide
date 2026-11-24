@@ -31,3 +31,7 @@ See the [Portuguese documentation index](../README.md) and the [Portuguese proje
 [← Back to the README](../../README.en.md)
 
 [Documentation review, checks, and limits](REVIEW.md)
+
+## Migrate an existing installation
+
+[OAuth persistence with Firestore](guides/OAUTH-PERSISTENCE.md) · [Changelog](../../CHANGELOG.md)

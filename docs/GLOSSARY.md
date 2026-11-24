@@ -37,4 +37,10 @@ Use este glossário como mapa entre os termos do Cloud e do Google Ads. Uma anal
 | **Homologação** | O ensaio formal antes do uso real. | Validação com ambiente, ferramentas, acessos, registros e controles aprovados pela organização. Reproduzir este tutorial não equivale a homologar nem certifica prontidão para produção. |
 | **TCO** | O custo total ao longo do tempo. | Total Cost of Ownership: infraestrutura, manutenção, monitoramento, segurança, suporte e tempo da equipe, além da cobrança de cada serviço. |
 
+### Persistência na prática
+
+- **Fernet:** criptografia autenticada em nível de aplicação do conteúdo OAuth armazenado.
+- **Revisão:** configuração imutável de implantação do Cloud Run; um novo processo não herda a memória anterior.
+- **Persistência:** guardar estado fora do processo. Não garante autorização sem expiração.
+
 **Próximo:** [Índice da documentação](README.md) · [Arquitetura](ARCHITECTURE.md) · [Tutor de IA](guides/AI-TUTOR.md)

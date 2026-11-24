@@ -82,3 +82,5 @@ If the interface requires a JavaScript origin, use the HTTPS base URL without a 
 **Final checkpoint:** the base URL configured in Cloud Run and the registered callback point to the same service. Complete [validation with a client](VALIDATION.md).
 
 [← Deployment](../getting-started/DEPLOY.md) · [Validation →](VALIDATION.md)
+
+The storage encryption key is distinct from the JWT signing key. Keep its version stable across revisions. Do not print it to check persistence. See [OAuth persistence](OAUTH-PERSISTENCE.md).

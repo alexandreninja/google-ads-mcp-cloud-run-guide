@@ -73,3 +73,5 @@ Removing Cloud Run does not remove its supporting resources. In a project dedica
 Do not delete a shared project or database to close this lab. Review the billing report afterwards; removing a service does not erase earlier usage charges.
 
 See [Costs](COSTS.md) and [Security](../SECURITY.md). Sources: [Cloud Run session affinity](https://docs.cloud.google.com/run/docs/configuring/session-affinity), [minimum instances](https://docs.cloud.google.com/run/docs/configuring/min-instances), and the [pinned upstream README](https://github.com/googleads/google-ads-mcp/blob/44ca7770519362c8f334875477e1ceb499f8d2dd/README.md#http-interoperability-notes).
+
+To migrate without replacing existing settings, preserve key versions, and test rollback, see [OAuth persistence](OAUTH-PERSISTENCE.md). Traffic rollback is not OAuth state restoration.

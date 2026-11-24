@@ -59,3 +59,7 @@ Com `min-instances=0`, o Cloud Run pode encerrar instâncias ociosas. Isso econo
 - [Google Ads API: OAuth e modelo de acesso](https://developers.google.com/google-ads/api/docs/oauth/access-model) e [fim dos tokens de desenvolvedor](https://developers.google.com/google-ads/api/docs/api-policy/developer-token).
 
 Próximo: [Implantação](getting-started/DEPLOY.md).
+
+## Estado OAuth e ciclo de vida do processo
+
+O Firestore externaliza o estado de autorização, não a sessão HTTP MCP. Veja a [migração de memória para Firestore](guides/OAUTH-PERSISTENCE.md) para reproduzir a validação entre revisões.

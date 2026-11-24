@@ -31,3 +31,7 @@ See the [English documentation index](en/README.md) and the [English project REA
 [← Voltar ao README](../README.md)
 
 [Revisão documental, verificações e limites](REVIEW.md)
+
+## Migração de uma instalação existente
+
+[Persistência OAuth com Firestore](guides/OAUTH-PERSISTENCE.md) · [Histórico de versões](../CHANGELOG.md)

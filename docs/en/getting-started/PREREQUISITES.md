@@ -96,3 +96,5 @@ The deployment guide creates separate build and runtime identities, an image rep
 > Creating and using these resources may incur charges. Review [costs](../guides/COSTS.md) and set a budget before deployment. Budget alerts notify you; they do not automatically stop spending. The [operations guide](../guides/OPERATIONS.md) covers cleanup when you finish the lab.
 
 **Next:** [02 · Deploy to Cloud Run](DEPLOY.md). It tells you when to configure OAuth before deployment.
+
+Before creating Firestore, check existing Native mode databases, location, free-tier eligibility and permission to grant database-conditioned IAM. See [OAuth persistence](../guides/OAUTH-PERSISTENCE.md).

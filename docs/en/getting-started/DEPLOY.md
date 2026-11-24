@@ -124,6 +124,16 @@ The `roles/storage.legacyBucketReader` role includes `storage.buckets.get`, need
 
 ## 5. Keep authorization outside the container
 
+A container is a replaceable workbench: its memory disappears when the process ends. Firestore keeps OAuth state outside the process; Secret Manager supplies the encryption key. Neither keeps an HTTP stream alive.
+
+```mermaid
+flowchart LR
+  A[Cloud Run] <-->|Encrypted OAuth state| B[(Firestore)]
+  C[Secret Manager] -->|Encryption key| A
+  A <-->|API| D[Google Ads API]
+```
+
+
 In a **dedicated project with no existing database**, create Firestore Standard in Native mode. Review the location before creating it. If a `(default)` database already exists, confirm its type and location; do not replace or change a production database to follow the example.
 
 ~~~bash
@@ -131,12 +141,13 @@ gcloud firestore databases create --database="$FIRESTORE_DATABASE" \
   --location="$REGION" --type=firestore-native --edition=standard \
   --project="$PROJECT_ID"
 gcloud projects add-iam-policy-binding "$PROJECT_ID" \
-  --member="serviceAccount:$RUNTIME_SA_EMAIL" --role=roles/datastore.user
+  --member="serviceAccount:$RUNTIME_SA_EMAIL" --role=roles/datastore.user \
+  --condition="expression=resource.name==\"projects/$PROJECT_ID/databases/$FIRESTORE_DATABASE\",title=McpFirestoreAccess,description=OAuth persistent storage"
 gcloud firestore databases describe --database="$FIRESTORE_DATABASE" \
   --project="$PROJECT_ID"
 ~~~
 
-**Checkpoint:** the database is available in Native mode. The `datastore.user` role grants access to project data, which is why this lab should be isolated. Firestore stores OAuth state, not an analytics database or every HTTP session. The upstream backend filters expired records on read but does not remove them automatically; plan [cleanup and retention](../guides/OPERATIONS.md).
+**Checkpoint:** the database is available in Native mode. The condition limits this grant to the named database, not individual collections. Keep the lab isolated and verify effective access during OAuth. Firestore stores OAuth state, not an analytics database or every HTTP session. The upstream backend filters expired records on read but does not remove them automatically; plan [cleanup and retention](../guides/OPERATIONS.md).
 
 ## 6. Set up OAuth and three secret versions
 
@@ -208,3 +219,5 @@ Follow [04 · Validation](../guides/VALIDATION.md). A ready service, an anonymou
 For maintenance or to close the lab, see [operations](../guides/OPERATIONS.md), [costs](../guides/COSTS.md), and [security](../SECURITY.md). Deleting Cloud Run does not delete images, secrets, the bucket, or Firestore.
 
 [← Prerequisites](PREREQUISITES.md) · [OAuth and secrets →](../guides/OAUTH-AND-SECRETS.md)
+
+Already have a memory-backed deployment? Use the [migration procedure](../guides/OAUTH-PERSISTENCE.md) instead of recreating the service.

@@ -96,3 +96,5 @@ A implantação cria identidades separadas de build e execução, repositório d
 > Criar e usar esses recursos pode gerar cobrança. Confira os [custos](../guides/COSTS.md) e defina um orçamento antes da implantação. Alertas avisam, mas não interrompem os gastos automaticamente. O [guia de operação](../guides/OPERATIONS.md) orienta a limpeza ao encerrar o laboratório.
 
 **Próximo:** [02 · Implantação no Cloud Run](DEPLOY.md). O guia sinaliza quando configurar OAuth antes de publicar.
+
+Antes de criar Firestore, confira os bancos existentes em modo Native, localização, elegibilidade à franquia gratuita e permissão para conceder IAM condicionado ao banco. Veja [persistência OAuth](../guides/OAUTH-PERSISTENCE.md).

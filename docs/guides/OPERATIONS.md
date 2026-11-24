@@ -74,3 +74,5 @@ Não apague um projeto ou banco compartilhado para encerrar este laboratório. C
 
 
 Para custos, consulte [Custos](COSTS.md). Para limites de acesso e credenciais, consulte [Segurança](../../SECURITY.md). Fontes: [Cloud Run — afinidade de sessão](https://docs.cloud.google.com/run/docs/configuring/session-affinity), [Cloud Run — instâncias mínimas](https://docs.cloud.google.com/run/docs/configuring/min-instances) e [README do upstream fixado](https://github.com/googleads/google-ads-mcp/blob/44ca7770519362c8f334875477e1ceb499f8d2dd/README.md#http-interoperability-notes).
+
+Para migrar sem substituir as configurações existentes, preservar versões de chaves e testar rollback, consulte [persistência OAuth](OAUTH-PERSISTENCE.md). Não confunda rollback de tráfego com restauração de estado OAuth.
